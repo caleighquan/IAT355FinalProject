@@ -1,11 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IAT355 Final Project</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vancouver Canucks Performance</title>
+  <link rel="stylesheet" href="main.css" />
 </head>
 <body>
-    
+
+  <header>
+    <nav>
+      <div class="logo">Canucks Data Story</div>
+      <div class="nav-links">
+        <a href="#subject">Subject</a>
+        <a href="#visualization">Visualization</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Vancouver Canucks Performance Analysis</h1>
+    <p>
+      Exploring the performance of the Vancouver Canucks through player and team statistics
+      across the past five NHL seasons.
+    </p>
+  </section>
+
+  <section id="subject">
+    <h2>Subject</h2>
+    <div class="card">
+      <p>
+        This project focuses on <strong>ice hockey</strong>, specifically the
+        <strong>Vancouver Canucks</strong>. Using data collected from public hockey
+        analytics sources such as MoneyPuck or Kaggle, the project examines player
+        performance, team trends, and key statistics over the past five seasons.
+      </p>
+
+      <p>
+        The dataset includes measures such as goals, assists, points, time on ice,
+        save percentage, goals against average, special teams performance, and team
+        outcomes like wins and losses. These variables help reveal patterns in
+        offensive contribution, defensive effort, player usage, and overall team success.
+      </p>
+    </div>
+  </section>
+
+  <section id="visualization">
+    <h2>Visualization</h2>
+    <div class="card">
+      <p>
+        This section contains a chart showing Vancouver Canucks player performance based on
+        total points. It helps compare players and identify the top contributors on the team.
+      </p>
+
+      <canvas id="pointsChart"></canvas>
+    </div>
+  </section>
+
+  <footer>
+    <p class="muted small">© <span id="year"></span> Caleigh Quan Brandon Wan Sarah Luong</p>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
