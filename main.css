@@ -1,5 +1,5 @@
 /* ─────────────────────────────────────────────
-       TOKENS & RESET
+      TOKENS & RESET
     ───────────────────────────────────────────── */
     :root {
       --navy:       #00205B;
@@ -25,7 +25,7 @@
 
 
     /* ─────────────────────────────────────────────
-       NAV DOTS
+      NAV DOTS
     ───────────────────────────────────────────── */
     .ndots {
       position: fixed; right: 28px; top: 50%;
@@ -62,7 +62,7 @@
     }
 
     /* ─────────────────────────────────────────────
-       TOOLTIP
+      TOOLTIP
     ───────────────────────────────────────────── */
     #tip {
       position: fixed;
@@ -78,13 +78,13 @@
     #tip .tv { color: #fff; font-weight: 500; }
 
     /* ─────────────────────────────────────────────
-       SCROLL-REVEAL
+      SCROLL-REVEAL
     ───────────────────────────────────────────── */
     .rv { opacity: 1; transform: none; }
     .rv.in { opacity: 1; transform: none; }
 
     /* ─────────────────────────────────────────────
-       SHARED LAYOUT
+      SHARED LAYOUT
     ───────────────────────────────────────────── */
     .wrap { max-width: 1180px; margin: 0 auto; padding: 0 56px; }
     section { position: relative; overflow: hidden; }
@@ -110,7 +110,7 @@
     .lead { font-size: 1.04rem; font-weight: 300; line-height: 1.82; color: var(--grey-lt); max-width: 660px; }
 
     /* ─────────────────────────────────────────────
-       ① HERO
+      HERO
     ───────────────────────────────────────────── */
     #hero {
       min-height: 100vh;
@@ -157,7 +157,7 @@
     .scroll-line { width:1px; height:44px; background:linear-gradient(to bottom,var(--grey),transparent); }
 
     /* ─────────────────────────────────────────────
-       ② OVERVIEW
+      OVERVIEW
     ───────────────────────────────────────────── */
     #overview { background:var(--navy-dk); padding:140px 0 120px; }
     .ov-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; margin-top:56px; }
@@ -185,28 +185,10 @@
     .s-tag.l { background:rgba(180,30,30,0.12); color:#e07070; border:1px solid rgba(180,30,30,0.25); }
 
     /* ─────────────────────────────────────────────
-       ③ APPROACH
+      APPROACH
     ───────────────────────────────────────────── */
     #approach { background:var(--navy-md); padding:120px 0; }
-    .ap-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:56px; }
-    .ap-card {
-      padding:36px 28px;
-      background:rgba(255,255,255,0.025);
-      border:1px solid rgba(255,255,255,0.07);
-      border-radius:10px;
-      transition:border-color 0.3s, background 0.3s, transform 0.3s;
-    }
-    .ap-card:hover { border-color:rgba(0,168,77,0.35); background:rgba(0,132,61,0.04); transform:translateY(-3px); }
-    .ap-ico {
-      width:50px; height:50px; border-radius:50%;
-      background:rgba(0,132,61,0.1); border:1px solid rgba(0,132,61,0.2);
-      display:flex; align-items:center; justify-content:center;
-      margin-bottom:22px;
-      font-family:'Oswald',sans-serif; font-size:1.1rem; font-weight:700; color:var(--green);
-    }
-    .ap-card h4 { font-family:'Oswald',sans-serif; font-size:1rem; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:#fff; margin-bottom:10px; }
-    .ap-card p { font-size:0.88rem; line-height:1.72; color:var(--grey-lt); }
-
+    
     /* ─────────────────────────────────────────────
        VIZ SHARED
     ───────────────────────────────────────────── */
@@ -243,13 +225,13 @@
     .grid path { stroke:none; }
 
     /* ─────────────────────────────────────────────
-       ④ VIZ 1
+      VIZ 1
     ───────────────────────────────────────────── */
     #viz1 { background:var(--navy-dk); padding:140px 0; }
     #ch1 { width:100%; display:block; }
 
     /* ─────────────────────────────────────────────
-       ⑤ TRANSITION
+      TRANSITION
     ───────────────────────────────────────────── */
     #tx1 { background:var(--navy-md); padding:130px 0; }
     .tx-text {
@@ -262,55 +244,15 @@
     .tx-text em { color:var(--green); font-style:normal; }
 
     /* ─────────────────────────────────────────────
-       ⑥ VIZ 2
+      VIZ 2
     ───────────────────────────────────────────── */
     #viz2 { background:var(--navy-dk); padding:140px 0; }
     #ch2 { width:100%; display:block; }
 
     /* ─────────────────────────────────────────────
-       ⑦ EP INTRO
+      EP PROFILE
     ───────────────────────────────────────────── */
-    #ep-intro {
-      min-height:100vh; display:flex; align-items:center;
-      background:var(--navy-md); padding:0; position:relative; overflow:hidden;
-    }
-    .ghost40 {
-      position:absolute; right:-4vw; top:50%; transform:translateY(-50%);
-      font-family:'Oswald',sans-serif;
-      font-size:clamp(20rem,36vw,42rem);
-      font-weight:700; line-height:1; color:rgba(255,255,255,0.022);
-      pointer-events:none; user-select:none; letter-spacing:-0.04em;
-    }
-    .ep-hline {
-      position:absolute; left:0; top:50%; width:100%; height:1px;
-      background:linear-gradient(90deg,transparent 0%,rgba(0,132,61,0.22) 40%,rgba(0,132,61,0.22) 60%,transparent 100%);
-    }
-    .ep-blob1 { display: none; }
-    .ep-blob2 { display: none; }
-    .ep-wrap { position:relative; z-index:2; padding:120px 56px; max-width:1180px; margin:0 auto; width:100%; }
-    .ep-badge {
-      display:inline-flex; align-items:center; gap:10px;
-      padding:7px 18px; border:1px solid rgba(0,132,61,0.35);
-      border-radius:100px; margin-bottom:36px;
-    }
-    .ep-badge-dot { width:7px; height:7px; border-radius:50%; background:var(--green); }
-    .ep-badge span { font-size:0.66rem; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; color:var(--green); }
-    .ep-title {
-      font-family:'Oswald',sans-serif;
-      font-size:clamp(4rem,10vw,9rem);
-      font-weight:700; line-height:0.88; text-transform:uppercase; letter-spacing:0.01em;
-    }
-    .ep-title .num { color:var(--green); font-size:0.52em; vertical-align:top; margin-left:0.1em; line-height:1.5; }
-    .ep-stats-r { display:flex; gap:0; margin-top:60px; flex-wrap:wrap; }
-    .ep-s { padding:20px 50px 0 0; border-top:1px solid rgba(255,255,255,0.12); margin-right:50px; margin-bottom:20px; }
-    .ep-s:last-child { padding-right:0; margin-right:0; }
-    .ep-sn { font-family:'Oswald',sans-serif; font-size:2.6rem; font-weight:700; line-height:1; color:#fff; }
-    .ep-sl { font-size:0.66rem; font-weight:400; letter-spacing:0.12em; text-transform:uppercase; color:var(--grey); margin-top:7px; line-height:1.45; }
-
-    /* ─────────────────────────────────────────────
-       ⑧ EP PROFILE
-    ───────────────────────────────────────────── */
-    #ep-profile { background:var(--navy-dk); padding:140px 0; }
+    #ep-profile { background:var(--navy-md); padding:140px 0; }
     .ep-pg { display:grid; grid-template-columns:1fr 1fr; gap:80px; margin-top:56px; }
     .ep-bio { font-size:1.02rem; font-weight:300; line-height:1.88; color:var(--grey-lt); }
     .ep-bio p+p { margin-top:22px; }
@@ -330,42 +272,25 @@
     .ep-tl-d { font-size:0.85rem; color:var(--grey-lt); line-height:1.5; }
 
     /* ─────────────────────────────────────────────
-       ⑨ VIZ 3
+      VIZ 3
     ───────────────────────────────────────────── */
-    #viz3 { background:var(--navy-md); padding:140px 0; }
+    #viz3 { background:var(--navy-dk); padding:140px 0; }
     #ch3 { width:100%; display:block; }
 
     /* ─────────────────────────────────────────────
-       ⑩ CONCLUSION
+      FOOTER
     ───────────────────────────────────────────── */
-    #conclusion { background:var(--navy-dk); padding:160px 0 100px; }
-    .con-intro { max-width:720px; margin-bottom:80px; }
-    .con-body { font-size:1.05rem; font-weight:300; line-height:1.85; color:var(--grey-lt); }
-    .tk-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-bottom:80px; }
-    .tk-card {
-      padding:38px 28px;
-      background:rgba(255,255,255,0.02);
-      border:1px solid rgba(255,255,255,0.07);
-      border-radius:12px; position:relative; overflow:hidden;
-      transition:border-color 0.3s, transform 0.35s;
+    .footer {
+      text-align: center;
+      padding: 80px 0 60px;
+      color: var(--grey-lt);
     }
-    .tk-card::before {
-      content:''; position:absolute; top:0; left:0; right:0; height:2px;
-      background:linear-gradient(90deg,var(--green),transparent);
+    .footer .flogo {
+      font-weight: 600;
+      font-size: 1rem;
     }
-    .tk-card:hover { border-color:rgba(0,132,61,0.3); transform:translateY(-5px); }
-    .tk-ico {
-      width:46px; height:46px; border-radius:50%;
-      background:rgba(0,132,61,0.1); border:1px solid rgba(0,132,61,0.2);
-      display:flex; align-items:center; justify-content:center; margin-bottom:24px;
-    }
-    .tk-ico svg { width:20px; height:20px; stroke:var(--green); fill:none; stroke-width:1.5; }
-    .tk-card h4 { font-family:'Oswald',sans-serif; font-size:1rem; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:#fff; margin-bottom:12px; }
-    .tk-card p { font-size:0.88rem; line-height:1.72; color:var(--grey); }
-    .footer { border-top:1px solid rgba(255,255,255,0.07); padding-top:40px; display:flex; justify-content:space-between; align-items:center; }
-    .flogo { font-family:'Oswald',sans-serif; font-size:1rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--grey); }
-    .flogo span { color:var(--green); }
-    .fnote { font-size:0.7rem; color:var(--grey); opacity:0.45; }
+    .footer .flogo span { color: var(--green); }
+    .footer .fnote { font-size: 0.78rem; margin-top: 8px; display: block; color: var(--grey); }
 
     /* ─────────────────────────────────────────────
        RESPONSIVE
