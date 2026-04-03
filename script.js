@@ -1,24 +1,7 @@
 /* ─────────────────────────────────────────────
-   SCROLL PROGRESS BAR
-───────────────────────────────────────────── */
-window.addEventListener('scroll', () => {
-  const p = window.scrollY / (document.documentElement.scrollHeight - innerHeight) * 100;
-  document.getElementById('spbar').style.width = p + '%';
-}, { passive: true });
-
-/* ─────────────────────────────────────────────
-   SCROLL-REVEAL
-───────────────────────────────────────────── */
-const rvObs = new IntersectionObserver(entries =>
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }),
-  { threshold: 0.1 }
-);
-document.querySelectorAll('.rv').forEach(el => rvObs.observe(el));
-
-/* ─────────────────────────────────────────────
    NAV DOTS
 ───────────────────────────────────────────── */
-const SEC = ['hero','overview','approach','viz1','tx1','viz2','ep-intro','viz3','conclusion'];
+const SEC = ['hero','approach','viz1','tx1','viz2','ep-intro','viz3','conclusion'];
 const dots = document.querySelectorAll('.ndot');
 dots.forEach((d, i) => d.addEventListener('click', () =>
   document.getElementById(SEC[i]).scrollIntoView({ behavior: 'smooth' })
@@ -35,61 +18,12 @@ const secObs = new IntersectionObserver(entries => {
 SEC.forEach(id => { const el = document.getElementById(id); if (el) secObs.observe(el); });
 
 /* ─────────────────────────────────────────────
-   SEASON BARS
-───────────────────────────────────────────── */
-const bObs = new IntersectionObserver(entries => {
-  if (!entries[0].isIntersecting) return;
-  bObs.disconnect();
-  document.querySelectorAll('#sbars .s-fill').forEach((el, i) =>
-    setTimeout(() => { el.style.width = el.dataset.w + '%'; }, i * 100 + 180)
-  );
-}, { threshold: 0.25 });
-bObs.observe(document.getElementById('sbars'));
-
-/* ─────────────────────────────────────────────
    TOOLTIP
 ───────────────────────────────────────────── */
 const TIP = document.getElementById('tip');
 const showTip = (html, x, y) => { TIP.innerHTML = html; TIP.style.opacity = 1; TIP.style.left = (x + 18) + 'px'; TIP.style.top = (y - 14) + 'px'; };
 const moveTip = (x, y) => { TIP.style.left = (x + 18) + 'px'; TIP.style.top = (y - 14) + 'px'; };
 const hideTip = () => { TIP.style.opacity = 0; };
-
-/* ─────────────────────────────────────────────
-   FALLBACK DATA (used if CSVs are unavailable)
-───────────────────────────────────────────── */
-const FALLBACK_TOP15 = [
-  { name:'E. Pettersson', goals:138 },
-  { name:'B. Boeser',     goals:122 },
-  { name:'J.T. Miller',   goals:110 },
-  { name:'C. Garland',    goals:82  },
-  { name:'B. Horvat',     goals:62  },
-  { name:'Q. Hughes',     goals:50  },
-  { name:'A. Kuzmenko',   goals:48  },
-  { name:'N. Hoglander',  goals:47  },
-  { name:'J. DeBrusk',    goals:46  },
-  { name:'P. Suter',      goals:42  },
-  { name:'K. Sherwood',   goals:39  },
-  { name:'D. Joshua',     goals:36  },
-  { name:'I. Mikheyev',   goals:25  },
-  { name:"D. O'Connor",   goals:20  },
-  { name:'T. Blueger',    goals:20  },
-];
-
-const FALLBACK_TEAM = [
-  { s:'2021-22', pts:92,  gf:3.00, ga:2.82, po:false },
-  { s:'2022-23', pts:83,  gf:3.29, ga:3.61, po:false },
-  { s:'2023-24', pts:109, gf:3.40, ga:2.70, po:true  },
-  { s:'2024-25', pts:90,  gf:2.84, ga:3.06, po:false },
-  { s:'2025-26', pts:50,  gf:2.54, ga:3.71, po:false },
-];
-
-const FALLBACK_EP = [
-  { s:'2021-22', ep:67,  tp:92  },
-  { s:'2022-23', ep:102, tp:83  },
-  { s:'2023-24', ep:97,  tp:109 },
-  { s:'2024-25', ep:74,  tp:90  },
-  { s:'2025-26', ep:40,  tp:50  },
-];
 
 const SEASONS = ['2021-22','2022-23','2023-24','2024-25','2025-26'];
 
@@ -107,19 +41,20 @@ Promise.all([
 ]).then(([players, teams]) => {
 
   players.forEach(d => {
-    d.Goals   = +d.Goals;
-    d.Assists = +d.Assists;
-    d.Points  = +d.Points;
-    d.GP      = +d.GP;
-    d.Season  = normSeason(d.Season);
+    d.Goals   = +d.goals;
+    d.Assists = +d.assists;
+    d.Points  = +d.points;
+    d.GP      = +d.gp;
+    d.Player  = d.player;
+    d.Season  = normSeason(d.season);
   });
 
   teams.forEach(d => {
-    d.Points       = +d.Points;
-    d.GoalsFor     = +d.GoalsFor;
-    d.GoalsAgainst = +d.GoalsAgainst;
-    d.GamesPlayed  = +d.GamesPlayed;
-    d.Playoffs     = d.Playoffs === 'true' || d.Playoffs === '1' || d.Playoffs === 'Yes';
+    d.Points       = +d.PTS;
+    d.GoalsFor     = +d.GF;
+    d.GoalsAgainst = +d.GA;
+    d.GamesPlayed  = +d.GP;
+    d.Playoffs     = d.Season === '2023-24';
     d.Season       = normSeason(d.Season);
   });
 
@@ -146,9 +81,13 @@ Promise.all([
 
   initCharts(TOP15, TEAM, EP, csvSeasons);
 
-}).catch(() => {
-  /* CSV files not available — use hardcoded fallback */
-  initCharts(FALLBACK_TOP15, FALLBACK_TEAM, FALLBACK_EP, SEASONS);
+}).catch(err => {
+  console.error('Failed to load CSV data:', err);
+  document.body.insertAdjacentHTML('afterbegin',
+    '<div style="position:fixed;top:0;left:0;right:0;background:#c0392b;color:#fff;padding:12px 20px;z-index:9999;font-family:Inter,sans-serif;font-size:0.85rem;">' +
+    '⚠ Could not load data files. Ensure canucks_player_stats_2021_2026_combined.csv and canucks_team_stats_2021_2026.csv are in the same directory.' +
+    '</div>'
+  );
 });
 
 /* ─────────────────────────────────────────────
