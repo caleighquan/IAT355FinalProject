@@ -100,13 +100,15 @@ footer {
 
 .tooltip {
   position: absolute;
-  background: black;
+  background: rgba(0, 0, 0, 0.85);
   color: white;
-  padding: 6px 10px;
-  border-radius: 6px;
-  font-size: 12px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 13px;
   pointer-events: none;
   opacity: 0;
+  z-index: 2000;
+  transition: opacity 0.2s;
 }
 
 @media (max-width: 768px) {

@@ -1,102 +1,102 @@
-fetch("standard_stats.csv")
-  .then(response => response.text())
-  .then(csvText => {
-    const rows = csvText.trim().split("\n");
+// Load the specific 5-season combined CSV
+d3.csv("canucks_player_stats_2021_2026_combined.csv").then(rawData => {
+    
+  // data aggregation: Sum goals for each player
+  const playerMap = d3.rollup(
+      rawData,
+      v => d3.sum(v, d => +d.goals), // Sum the 'goals' column
+      d => d.player                  // Group by 'player' column
+  );
 
-    const headers = rows[0].split(",").map(header => header.trim().replace("\r", ""));
+  // Convert map to array and sort by goals descending
+  let data = Array.from(playerMap, ([player, goals]) => ({ player, goals }));
+  data.sort((a, b) => b.goals - a.goals);
+  
+  // top 15
+  const topData = data.slice(0, 15);
 
-    const playerIndex = headers.indexOf("Player");
-    const pointsIndex = headers.indexOf("PTS");
+  // chart dimensions
+  const margin = { top: 50, right: 20, bottom: 120, left: 60 };
+  const width = 800 - margin.left - margin.right;
+  const height = 400 - margin.top - margin.bottom;
 
-    const data = [];
+  const svg = d3.select("#pointsChart")
+    .html("") // Clear container
+    .append("svg")
+    .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+    .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    for (let i = 1; i < rows.length; i++) {
-      const cols = rows[i].split(",").map(col => col.trim().replace("\r", ""));
+  // scales
+  const x = d3.scaleBand()
+    .domain(topData.map(d => d.player))
+    .range([0, width])
+    .padding(0.2);
 
-      const player = cols[playerIndex];
-      const pts = Number(cols[pointsIndex]);
+  const y = d3.scaleLinear()
+    .domain([0, d3.max(topData, d => d.goals) + 10])
+    .nice()
+    .range([height, 0]);
 
-      if (player && player !== "Team Totals" && !isNaN(pts)) {
-        data.push({ player, pts });
-      }
-    }
+  // axes
+  svg.append("g")
+    .attr("transform", `translate(0,${height})`)
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .attr("transform", "rotate(-45)")
+    .style("text-anchor", "end")
+    .style("font-size", "11px");
 
-    data.sort((a, b) => b.pts - a.pts);
-    const topData = data.slice(0, 10);
+  svg.append("g")
+    .call(d3.axisLeft(y));
 
-    const formattedData = topData.map(d => ({
-      player: d.player,
-      pts: d.pts
-    }));
+  // tooltip
+  const tooltip = d3.select("body")
+    .selectAll(".tooltip")
+    .data([0])
+    .join("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
 
-    const margin = { top: 40, right: 20, bottom: 100, left: 60 };
-    const width = 800 - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;
+  // bars
+  svg.selectAll("rect")
+    .data(topData)
+    .enter()
+    .append("rect")
+    .attr("x", d => x(d.player))
+    .attr("width", x.bandwidth())
+    .attr("y", height) // Animation start
+    .attr("height", 0)
+    .attr("fill", "#00205B")
+    .on("mouseover", function(event, d) {
+      tooltip.transition().duration(200).style("opacity", 1);
+      tooltip.html(`<strong>${d.player}</strong><br>${d.goals} goals`)
+             .style("left", (event.pageX + 10) + "px")
+             .style("top", (event.pageY - 20) + "px");
+      d3.select(this).attr("fill", "#0055a5");
+    })
+    .on("mousemove", function(event) {
+      tooltip.style("left", (event.pageX + 10) + "px")
+             .style("top", (event.pageY - 20) + "px");
+    })
+    .on("mouseout", function() {
+      tooltip.transition().duration(200).style("opacity", 0);
+      d3.select(this).attr("fill", "#00205B");
+    })
+    .transition()
+    .duration(800)
+    .attr("y", d => y(d.goals))
+    .attr("height", d => height - y(d.goals));
 
-    const svg = d3.select("#pointsChart")
-      .append("svg")
-      .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
-      .append("g")
-      .attr("transform", `translate(${margin.left},${margin.top})`);
+  // title
+  svg.append("text")
+    .attr("x", width / 2)
+    .attr("y", -20)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .style("font-weight", "bold")
+    .text("Top 15 Vancouver Canucks Players by Goals in the Last 5 Seasons");
 
-    const tooltip = d3.select("body")
-      .append("div")
-      .attr("class", "tooltip");
-
-    const x = d3.scaleBand()
-      .domain(formattedData.map(d => d.player))
-      .range([0, width])
-      .padding(0.2);
-
-    const y = d3.scaleLinear()
-      .domain([0, d3.max(formattedData, d => d.pts)])
-      .nice()
-      .range([height, 0]);
-
-    svg.append("g")
-      .attr("transform", `translate(0,${height})`)
-      .call(d3.axisBottom(x))
-      .selectAll("text")
-      .attr("transform", "rotate(-45)")
-      .style("text-anchor", "end");
-
-    svg.append("g")
-      .call(d3.axisLeft(y));
-
-    svg.selectAll("rect")
-      .data(formattedData)
-      .enter()
-      .append("rect")
-      .attr("x", d => x(d.player))
-      .attr("width", x.bandwidth())
-      .attr("y", height)
-      .attr("height", 0)
-      .attr("fill", "#00205B")
-
-      .on("mouseover", function(event, d) {
-        tooltip.style("opacity", 1)
-          .html(`<strong>${d.player}</strong><br>${d.pts} points`);
-
-        d3.select(this).attr("fill", "#0055a5");
-      })
-      .on("mousemove", function(event) {
-        tooltip.style("left", (event.pageX + 10) + "px")
-               .style("top", (event.pageY - 20) + "px");
-      })
-      .on("mouseout", function() {
-        tooltip.style("opacity", 0);
-        d3.select(this).attr("fill", "#00205B");
-      })
-
-      .transition()
-      .duration(800)
-      .attr("y", d => y(d.pts))
-      .attr("height", d => height - y(d.pts));
-
-    svg.append("text")
-      .attr("x", width / 2)
-      .attr("y", -10)
-      .attr("text-anchor", "middle")
-      .text("Vancouver Canucks Player Points");
-  })
-  .catch(error => console.error("Error loading CSV:", error));
+}).catch(err => {
+  console.error("Error loading CSV:", err);
+});
