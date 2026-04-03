@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vancouver Canucks Performance</title>
+  <title>Vancouver Canucks Performance Analysis</title>
   <link rel="stylesheet" href="main.css" />
 </head>
 <body>
@@ -13,50 +13,48 @@
       <div class="logo">Canucks Data Story</div>
       <div class="nav-links">
         <a href="#subject">Subject</a>
-        <a href="#visualization">Visualization</a>
+        <a href="#goals">Scoring</a>
+        <a href="#performance">Team Performance</a>
       </div>
     </nav>
   </header>
 
   <section class="hero">
-    <h1>Top 15 Vancouver Canucks Players by Goals in the Last 5 Seasons</h1>
-    <p>(2021–2026)</p>
+    <h1>Vancouver Canucks Performance Analysis</h1>
+    <p>Data Insights from the 2021–2026 Seasons</p>
   </section>
 
   <section id="subject">
     <h2>Subject</h2>
     <div class="card">
       <p>
-        This project focuses on <strong>ice hockey</strong>, specifically the
-        <strong>Vancouver Canucks</strong>. Using data collected from public hockey
-        analytics sources such as MoneyPuck or Kaggle, the project examines player
-        performance, team trends, and key statistics over the past five seasons.
-      </p>
-
-      <p>
-        The dataset includes measures such as goals, assists, points, time on ice,
-        save percentage, goals against average, special teams performance, and team
-        outcomes like wins and losses. These variables help reveal patterns in
-        offensive contribution, defensive effort, player usage, and overall team success.
+        This project focuses on the <strong>Vancouver Canucks</strong>. We visualize the 
+        offensive contributions of top players and the overall team balance between 
+        scoring and defense.
       </p>
     </div>
   </section>
 
-  <section id="visualization">
-    <h2>Visualization</h2>
+  <section id="goals">
+    <h2>Top 15 Players by Goals</h2>
     <div class="card">
       <div id="pointsChart"></div>
     </div>
   </section>
 
+  <section id="performance">
+    <h2>Offence vs Defence</h2>
+    <div class="card">
+      <div id="teamChart"></div>
+    </div>
+  </section>
+
   <footer>
-    <p class="muted small">© <span id="year"></span> Caleigh Quan Brandon Wan Sarah Luong</p>
+    <p>© <span id="year"></span> Caleigh Quan Brandon Wan Sarah Luong</p>
   </footer>
 
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="script.js"></script>
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </body>
 </html>
