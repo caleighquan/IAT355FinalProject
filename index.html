@@ -3,66 +3,359 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vancouver Canucks Performance Analysis</title>
+  <title>Breaking Down Canucks Performance · 2021–2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet" />
+  <script src="https://d3js.org/d3.v7.min.js"></script>
   <link rel="stylesheet" href="main.css" />
 </head>
 <body>
 
-  <header>
-    <nav>
-      <div class="logo">Canucks Data Story</div>
-      <div class="nav-links">
-        <a href="#overview">Overview</a>
-        <a href="#goals">Top Scorers</a>
-        <a href="#performance">Team Performance</a>
-        <a href="#player-trend">Pettersson Trend</a>
+<div id="spbar"></div>
+
+<nav class="ndots" id="navDots">
+  <div class="ndot on"   data-s="hero"       title="Introduction"></div>
+  <div class="ndot"      data-s="overview"   title="Overview"></div>
+  <div class="ndot"      data-s="approach"   title="Approach"></div>
+  <div class="ndot"      data-s="viz1"       title="Top Scorers"></div>
+  <div class="ndot"      data-s="tx1"        title="Both Sides"></div>
+  <div class="ndot"      data-s="viz2"       title="Team Balance"></div>
+  <div class="ndot"      data-s="ep-intro"   title="Pettersson"></div>
+  <div class="ndot"      data-s="viz3"       title="Star Impact"></div>
+  <div class="ndot"      data-s="conclusion" title="Conclusion"></div>
+</nav>
+
+<div id="tip"></div>
+
+<!-- ══════════════════════════════════════
+     ① HERO
+══════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-bg">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+    <div class="blob b4"></div>
+    <div class="rink"></div>
+  </div>
+  <div class="hero-inner">
+    <p class="hero-eye">Vancouver Canucks · Data Story · 2021–2026</p>
+    <h1 class="hero-h">
+      Breaking Down<br>
+      <span class="hl">Canucks</span>
+      Performance
+    </h1>
+    <p class="hero-sub">Players, trends, and team dynamics across five seasons of highs, lows, and everything in between.</p>
+    <div class="hero-stats">
+      <div class="hs"><div class="hs-n">5</div><div class="hs-l">Seasons Analysed</div></div>
+      <div class="hs"><div class="hs-n">1</div><div class="hs-l">Playoff Appearance</div></div>
+      <div class="hs"><div class="hs-n">50–23</div><div class="hs-l">Best Season Record</div></div>
+      <div class="hs"><div class="hs-n">1970</div><div class="hs-l">Franchise Founded</div></div>
+    </div>
+  </div>
+  <div class="scroll-cue">
+    <span>Scroll to explore</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     ② OVERVIEW
+══════════════════════════════════════ -->
+<section id="overview">
+  <div class="wrap">
+    <div class="rv">
+      <p class="chip">Season Overview</p>
+      <h2 class="st">Five Seasons.<br><em>One Bright Spot.</em></h2>
+    </div>
+    <div class="ov-grid">
+      <div class="rv d1 ov-body">
+        <p>Since entering the league in 1970, the Vancouver Canucks have been a streaky team. Periods of strong performance are often followed by sharp downturns — and the past five seasons reflect that pattern precisely.</p>
+        <p>Across five different team iterations, the Canucks made the playoffs just <strong>once</strong>. That was in 2024, when they posted the best record in their division at <strong>50–23–9</strong>, earning 109 standings points.</p>
+        <p>Two years later, they find themselves dead last in the league — with one of the worst seasons in franchise history.</p>
+        <span class="hook">How did we get here?</span>
       </div>
-    </nav>
-  </header>
-
-  <section class="hero">
-    <h1>Vancouver Canucks Performance Analysis</h1>
-    <p>Data Insights from the 2021–2026 Seasons</p>
-  </section>
-
-  <section id="overview">
-    <h2>Overview</h2>
-    <div class="card">
-      <p>
-        This project focuses on the <strong>Vancouver Canucks</strong>. We visualize the 
-        career trajectory of star center Elias Pettersson, the offensive contributions of 
-        the top 15 players, and the overall team balance between scoring and defense.
-      </p>
+      <div class="rv d2">
+        <div class="tl-head">
+          <span class="tl-lbl">Season</span>
+          <span class="tl-lbl">Standings Points</span>
+        </div>
+        <div id="sbars">
+          <div class="s-row">
+            <div class="s-yr">2021–22</div>
+            <div class="s-track"><div class="s-fill" data-w="70.7"><span class="s-pts">92 pts</span></div></div>
+            <span class="s-tag m">Missed</span>
+          </div>
+          <div class="s-row">
+            <div class="s-yr">2022–23</div>
+            <div class="s-track"><div class="s-fill" data-w="63.8"><span class="s-pts">83 pts</span></div></div>
+            <span class="s-tag m">Missed</span>
+          </div>
+          <div class="s-row">
+            <div class="s-yr">2023–24</div>
+            <div class="s-track"><div class="s-fill peak" data-w="83.8"><span class="s-pts">109 pts ★</span></div></div>
+            <span class="s-tag p">Playoffs</span>
+          </div>
+          <div class="s-row">
+            <div class="s-yr">2024–25</div>
+            <div class="s-track"><div class="s-fill" data-w="69.2"><span class="s-pts">90 pts</span></div></div>
+            <span class="s-tag m">Missed</span>
+          </div>
+          <div class="s-row">
+            <div class="s-yr">2025–26</div>
+            <div class="s-track"><div class="s-fill" data-w="38.5"><span class="s-pts">50 pts*</span></div></div>
+            <span class="s-tag l">Last Place</span>
+          </div>
+        </div>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="goals">
-    <h2>Top 15 Players by Goals</h2>
-    <div class="card">
-      <div id="pointsChart"></div>
+<!-- ══════════════════════════════════════
+     ③ APPROACH
+══════════════════════════════════════ -->
+<section id="approach">
+  <div class="wrap">
+    <div class="rv">
+      <p class="chip">Methodology</p>
+      <h2 class="st">Our <em>Approach</em></h2>
+      <p class="lead">We focused on keeping data consistent and comparable across seasons — using regular season stats only, the standard 82-game format that puts every team on equal footing year after year.</p>
     </div>
-  </section>
-
-  <section id="performance">
-    <h2>Offence vs Defence</h2>
-    <div class="card">
-      <div id="teamChart"></div>
+    <div class="ap-grid">
+      <div class="ap-card rv d1">
+        <div class="ap-ico">82</div>
+        <h4>Regular Season Only</h4>
+        <p>Each NHL team plays 82 regular season games. We excluded playoff data to ensure fair, unbiased year-over-year comparisons without the variability of post-season hockey.</p>
+      </div>
+      <div class="ap-card rv d2">
+        <div class="ap-ico ap-ico--sm">5 YRS</div>
+        <h4>Five Seasons</h4>
+        <p>We span 2021–22 through 2025–26 — capturing a full cycle from mediocrity, to peak performance, and back into a difficult rebuild.</p>
+      </div>
+      <div class="ap-card rv d3">
+        <div class="ap-ico ap-ico--xs">3&thinsp;×</div>
+        <h4>Three Lenses</h4>
+        <p>Scoring distribution, offensive vs. defensive balance, and the correlation between star-player performance and overall team outcomes.</p>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="player-trend">
-    <h2>Elias Pettersson: Performance Over Time</h2>
-    <div class="card">
-      <div id="epChart"></div>
+<!-- ══════════════════════════════════════
+     ④ VIZ 1 – TOP SCORERS
+══════════════════════════════════════ -->
+<section id="viz1">
+  <div class="wrap">
+    <div class="rv viz-hd">
+      <p class="chip">Visualisation 01</p>
+      <h2 class="st">Who Drives the<br><em>Canucks' Offence?</em></h2>
+      <p class="lead">Total goals scored by the top 15 Vancouver Canucks players across five seasons (2021–2026) — revealing how sharply offensive production drops off after the top handful of players. Hover any bar to see the exact total.</p>
     </div>
-  </section>
+    <div class="rv d1">
+      <div class="chart-box">
+        <div class="ctitle">Total goals scored · Top 15 players · 2021–2026 combined</div>
+        <svg id="ch1"></svg>
+      </div>
+    </div>
+    <div class="ins-grid">
+      <div class="ins-card rv d2">
+        <div class="ins-n">01</div>
+        <p class="ins-t">The Canucks consistently rely on a tight cluster of players for goals. The top four contributors account for the bulk of offensive production in every single season.</p>
+      </div>
+      <div class="ins-card rv d3">
+        <div class="ins-n">02</div>
+        <p class="ins-t">This concentration creates fragility — dips from even one of these players measurably shifts the team's results across an entire 82-game season.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <footer>
-    <p>© <span id="year"></span> Caleigh Quan Brandon Wan Sarah Luong</p>
-  </footer>
+<!-- ══════════════════════════════════════
+     ⑤ TRANSITION
+══════════════════════════════════════ -->
+<section id="tx1">
+  <div class="wrap">
+    <div class="tx-text rv">
+      Scoring highlights key contributors — but it doesn't capture the <em>full picture</em>.<br>
+      To truly understand team performance, we need to look at <em>both sides of the ice</em>.
+    </div>
+  </div>
+</section>
 
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script src="script.js"></script>
-  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+<!-- ══════════════════════════════════════
+     ⑥ VIZ 2 – TEAM BALANCE
+══════════════════════════════════════ -->
+<section id="viz2">
+  <div class="wrap">
+    <div class="rv viz-hd">
+      <p class="chip">Visualisation 02</p>
+      <h2 class="st">Is the Team<br><em>Balanced?</em></h2>
+      <p class="lead">Goals for per game (offence) plotted against goals against per game (defence) across five seasons. The ideal zone — elite scoring, stingy defence — is where championships are built. Where do the Canucks sit?</p>
+    </div>
+    <div class="rv d1">
+      <div class="chart-box">
+        <div class="ctitle">Goals For / Game vs. Goals Against / Game · 2021–2026</div>
+        <svg id="ch2"></svg>
+      </div>
+    </div>
+    <div class="ins-grid">
+      <div class="ins-card rv d2">
+        <div class="ins-n">01</div>
+        <p class="ins-t">2023–24 is the clear outlier — the only season where Vancouver scored at an elite pace while simultaneously holding opponents under 3.0 goals per game.</p>
+      </div>
+      <div class="ins-card rv d3">
+        <div class="ins-n">02</div>
+        <p class="ins-t">In every other season, the Canucks conceded more than they scored on average — a persistent structural imbalance that explains their struggle to sustain playoff contention.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     ⑦ EP INTRO SPOTLIGHT
+══════════════════════════════════════ -->
+<section id="ep-intro">
+  <div class="ep-blob1"></div>
+  <div class="ep-blob2"></div>
+  <div class="ghost40">40</div>
+  <div class="ep-hline"></div>
+  <div class="ep-wrap">
+    <div class="ep-badge rv">
+      <div class="ep-badge-dot"></div>
+      <span>Player Spotlight · Centre · #40</span>
+    </div>
+    <h2 class="ep-title rv d1">
+      Elias<br>Pettersson<span class="num">#40</span>
+    </h2>
+    <div class="ep-stats-r">
+      <div class="ep-s rv d2"><div class="ep-sn">102</div><div class="ep-sl">Career-high points<br>2022–23</div></div>
+      <div class="ep-s rv d3"><div class="ep-sn">5th</div><div class="ep-sl">Overall pick<br>2017 NHL Draft</div></div>
+      <div class="ep-s rv d4"><div class="ep-sn">2019</div><div class="ep-sl">Calder Trophy<br>Winner</div></div>
+      <div class="ep-s rv d5"><div class="ep-sn">∞</div><div class="ep-sl">Long-term<br>extension signed</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     ⑧ EP PROFILE
+══════════════════════════════════════ -->
+<section id="ep-profile">
+  <div class="wrap">
+    <div class="rv">
+      <p class="chip">Player Profile</p>
+      <h2 class="st">The Next<br><em>Captain?</em></h2>
+    </div>
+    <div class="ep-pg">
+      <div class="ep-bio rv d1">
+        <p>In early 2026, the Canucks traded away their captain <strong>Quinn Hughes</strong> in a blockbuster deal to Minnesota. Ever since his departure, fans and analysts have been speculating about who will wear the C on their chest next.</p>
+        <p>A name that keeps surfacing is <strong>Elias Pettersson</strong> — the Swedish forward drafted 5th overall in 2017. He won the <strong>Calder Trophy</strong> in his rookie season and has since evolved into an NHL All-Star and the unquestioned centrepiece of Vancouver's offence.</p>
+        <p>Pettersson recently signed a <strong>long-term extension</strong> — a statement to fans and the league that he is here for the long haul. Though hockey is a team sport, we expect our stars to shine and lead the way. So how has EP40 performed — and what does it tell us about the Canucks' trajectory?</p>
+      </div>
+      <div class="rv d2">
+        <div class="ep-tl">
+          <div class="ep-tl-item">
+            <div class="ep-tl-left"><div class="ep-tl-dot"></div><div class="ep-tl-line"></div></div>
+            <div class="ep-tl-yr">2017</div>
+            <div class="ep-tl-body"><div class="ep-tl-h">Drafted 5th Overall</div><div class="ep-tl-d">2017 NHL Draft, Dallas — selected by Vancouver Canucks</div></div>
+          </div>
+          <div class="ep-tl-item">
+            <div class="ep-tl-left"><div class="ep-tl-dot"></div><div class="ep-tl-line"></div></div>
+            <div class="ep-tl-yr">2019</div>
+            <div class="ep-tl-body"><div class="ep-tl-h">Calder Trophy</div><div class="ep-tl-d">NHL Rookie of the Year — 66 points in 71 games</div></div>
+          </div>
+          <div class="ep-tl-item">
+            <div class="ep-tl-left"><div class="ep-tl-dot"></div><div class="ep-tl-line"></div></div>
+            <div class="ep-tl-yr">2022</div>
+            <div class="ep-tl-body"><div class="ep-tl-h">NHL All-Star</div><div class="ep-tl-d">Named to the Pacific Division All-Star roster</div></div>
+          </div>
+          <div class="ep-tl-item">
+            <div class="ep-tl-left"><div class="ep-tl-dot"></div><div class="ep-tl-line"></div></div>
+            <div class="ep-tl-yr">2023</div>
+            <div class="ep-tl-body"><div class="ep-tl-h">102-Point Season</div><div class="ep-tl-d">Career best — 39 goals, 63 assists across 82 games</div></div>
+          </div>
+          <div class="ep-tl-item">
+            <div class="ep-tl-left"><div class="ep-tl-dot"></div><div class="ep-tl-line"></div></div>
+            <div class="ep-tl-yr">2025</div>
+            <div class="ep-tl-body"><div class="ep-tl-h">Long-Term Extension</div><div class="ep-tl-d">Commits to Vancouver for the foreseeable future</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     ⑨ VIZ 3 – EP vs TEAM
+══════════════════════════════════════ -->
+<section id="viz3">
+  <div class="wrap">
+    <div class="rv viz-hd">
+      <p class="chip">Visualisation 03</p>
+      <h2 class="st">Does the Star Player<br><em>Reflect Team Performance?</em></h2>
+      <p class="lead">Pettersson's personal points overlaid against Vancouver's team standings points across five seasons. When the lines move together, it confirms the team's fortunes are deeply intertwined with their star player.</p>
+    </div>
+    <div class="rv d1">
+      <div class="chart-box">
+        <div class="ctitle">EP Points vs. Team Standings Points · 2021–2026</div>
+        <svg id="ch3"></svg>
+        <div class="cleg" id="leg3"></div>
+      </div>
+    </div>
+    <div class="ins-grid">
+      <div class="ins-card rv d2">
+        <div class="ins-n">01</div>
+        <p class="ins-t">Pettersson's output tracks the team's fortunes almost perfectly — both peaked in 2023–24 and both declined sharply in the seasons that followed.</p>
+      </div>
+      <div class="ins-card rv d3">
+        <div class="ins-n">02</div>
+        <p class="ins-t">The correlation is a double-edged sword: when EP40 excels, the team contends. When he struggles, the whole roster feels it — underscoring how critical his role is to any rebuild.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     ⑩ CONCLUSION
+══════════════════════════════════════ -->
+<section id="conclusion">
+  <div class="wrap">
+    <div class="con-intro rv">
+      <p class="chip">Conclusion</p>
+      <h2 class="st">The Road<br><em>Ahead</em></h2>
+      <p class="con-body">The Canucks' performance over five seasons is shaped by three interlocking forces: concentrated offensive production, inconsistent team balance between offence and defence, and the outsized influence of their star player. Long-term success will require addressing all three — broadening offensive depth, tightening defence, and ensuring Elias Pettersson is surrounded by a system designed to win.</p>
+    </div>
+    <div class="tk-grid">
+      <div class="tk-card rv d1">
+        <div class="tk-ico">
+          <svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        </div>
+        <h4>Concentrated Scoring</h4>
+        <p>Goals consistently funnel through a small group of players. That makes production brittle — rivals can game-plan against it, and injuries become catastrophic.</p>
+      </div>
+      <div class="tk-card rv d2">
+        <div class="tk-ico">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <h4>Balance Wins Games</h4>
+        <p>2023–24 proved it: elite offence paired with stingy defence is the winning formula. That combination has appeared exactly once in five years.</p>
+      </div>
+      <div class="tk-card rv d3">
+        <div class="tk-ico">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <h4>The Pettersson Effect</h4>
+        <p>Pettersson's performance mirrors team fortune with striking consistency. His health, form, and eventual captaincy are central to any future success — making his long-term commitment all the more significant.</p>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="flogo">Vancouver <span>Canucks</span> · Data Story</div>
+      <div class="fnote">Regular season data · 2021–22 through 2025–26</div>
+    </div>
+  </div>
+</section>
+
+<script src="script.js"></script>
 </body>
 </html>
