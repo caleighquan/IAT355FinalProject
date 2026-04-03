@@ -1,7 +1,7 @@
 /* ─────────────────────────────────────────────
    NAV DOTS
 ───────────────────────────────────────────── */
-const SEC = ['hero','approach','viz1','tx1','viz2','ep-intro','viz3','conclusion'];
+const SEC = ['hero','approach','viz1','tx1','viz2','ep-profile','viz3'];
 const dots = document.querySelectorAll('.ndot');
 dots.forEach((d, i) => d.addEventListener('click', () =>
   document.getElementById(SEC[i]).scrollIntoView({ behavior: 'smooth' })
