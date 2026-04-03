@@ -3,14 +3,10 @@ fetch("standard_stats.csv")
   .then(csvText => {
     const rows = csvText.trim().split("\n");
 
-    // clean headers
     const headers = rows[0].split(",").map(header => header.trim().replace("\r", ""));
 
     const playerIndex = headers.indexOf("Player");
     const pointsIndex = headers.indexOf("PTS");
-
-    console.log("Headers:", headers);
-    console.log("Player index:", playerIndex, "PTS index:", pointsIndex);
 
     const data = [];
 
@@ -27,52 +23,80 @@ fetch("standard_stats.csv")
 
     data.sort((a, b) => b.pts - a.pts);
     const topData = data.slice(0, 10);
-    
-    const players = topData.map(d => d.player);
-    const points = topData.map(d => d.pts);
 
-    console.log("Players:", players);
-    console.log("Points:", points);
+    const formattedData = topData.map(d => ({
+      player: d.player,
+      pts: d.pts
+    }));
 
-    new Chart(document.getElementById("pointsChart"), {
-      type: "bar",
-      data: {
-        labels: players,
-        datasets: [{
-          label: "Points",
-          data: points,
-          backgroundColor: "#00205B",
-          borderColor: "#00163f",
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          title: {
-            display: true,
-            text: "Vancouver Canucks Player Points"
-          },
-          legend: {
-            display: false
-          }
-        },
-        scales: {
-          x: {
-            ticks: {
-              maxRotation: 90,
-              minRotation: 45
-            }
-          },
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: "Points"
-            }
-          }
-        }
-      }
-    });
+    const margin = { top: 40, right: 20, bottom: 100, left: 60 };
+    const width = 800 - margin.left - margin.right;
+    const height = 400 - margin.top - margin.bottom;
+
+    const svg = d3.select("#pointsChart")
+      .append("svg")
+      .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const tooltip = d3.select("body")
+      .append("div")
+      .attr("class", "tooltip");
+
+    const x = d3.scaleBand()
+      .domain(formattedData.map(d => d.player))
+      .range([0, width])
+      .padding(0.2);
+
+    const y = d3.scaleLinear()
+      .domain([0, d3.max(formattedData, d => d.pts)])
+      .nice()
+      .range([height, 0]);
+
+    svg.append("g")
+      .attr("transform", `translate(0,${height})`)
+      .call(d3.axisBottom(x))
+      .selectAll("text")
+      .attr("transform", "rotate(-45)")
+      .style("text-anchor", "end");
+
+    svg.append("g")
+      .call(d3.axisLeft(y));
+
+    svg.selectAll("rect")
+      .data(formattedData)
+      .enter()
+      .append("rect")
+      .attr("x", d => x(d.player))
+      .attr("width", x.bandwidth())
+      .attr("y", height)
+      .attr("height", 0)
+      .attr("fill", "#00205B")
+
+      .on("mouseover", function(event, d) {
+        tooltip.style("opacity", 1)
+          .html(`<strong>${d.player}</strong><br>${d.pts} points`);
+
+        d3.select(this).attr("fill", "#0055a5");
+      })
+      .on("mousemove", function(event) {
+        tooltip.style("left", (event.pageX + 10) + "px")
+               .style("top", (event.pageY - 20) + "px");
+      })
+      .on("mouseout", function() {
+        tooltip.style("opacity", 0);
+        d3.select(this).attr("fill", "#00205B");
+      })
+
+      .transition()
+      .duration(800)
+      .attr("y", d => y(d.pts))
+      .attr("height", d => height - y(d.pts));
+
+    svg.append("text")
+      .attr("x", width / 2)
+      .attr("y", -10)
+      .attr("text-anchor", "middle")
+      .text("Vancouver Canucks Player Points");
   })
   .catch(error => console.error("Error loading CSV:", error));

@@ -52,8 +52,7 @@
         This section contains a chart showing Vancouver Canucks player performance based on
         total points. It helps compare players and identify the top contributors on the team.
       </p>
-
-      <canvas id="pointsChart"></canvas>
+      <div id="pointsChart"></div>
     </div>
   </section>
 
@@ -65,7 +64,7 @@
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

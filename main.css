@@ -85,20 +85,6 @@ section h2 {
   margin-top: 20px;
 }
 
-.placeholder-viz {
-  height: 350px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px dashed #7a7a7a;
-  border-radius: 12px;
-  background-color: #f0f3f8;
-  color: #555;
-  font-size: 1.1rem;
-  text-align: center;
-  padding: 20px;
-}
-
 canvas {
   margin-top: 20px;
   max-width: 100%;
@@ -110,6 +96,17 @@ footer {
   background: #00205b;
   color: white;
   margin-top: 40px;
+}
+
+.tooltip {
+  position: absolute;
+  background: black;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  pointer-events: none;
+  opacity: 0;
 }
 
 @media (max-width: 768px) {
