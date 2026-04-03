@@ -6,26 +6,26 @@ Promise.all([
     d3.csv("canucks_team_stats_2021_2026.csv")
 ]).then(([playerData, teamData]) => {
 
-    // 1. Process Elias Pettersson Points
-    const epDataRaw = playerData.filter(d => d.player === "Elias Pettersson");
-    const epSeasonMap = d3.rollup(epDataRaw, v => d3.sum(v, d => +d.points), d => d.season);
-    const epTrendData = Array.from(epSeasonMap, ([season, points]) => ({ season, points }))
-                             .sort((a, b) => a.season.localeCompare(b.season));
-    renderEPChart(epTrendData);
-
-    // 2. Process Top 15 Scorers
+    // 1. Process Top 15 Scorers
     const playerMap = d3.rollup(playerData, v => d3.sum(v, d => +d.goals), d => d.player);
     let barData = Array.from(playerMap, ([player, goals]) => ({ player, goals }))
                        .sort((a, b) => b.goals - a.goals).slice(0, 15);
     renderBarChart(barData);
 
-    // 3. Process Team Stats
+    // 2. Process Team Stats
     const processedTeamData = teamData.map(d => ({
         Season: d.Season,
         "GF/G": +d["GF/G"],
         "GA/G": +d["GA/G"]
     }));
     renderScatterPlot(processedTeamData);
+
+    // 3. Process Elias Pettersson Points
+    const epDataRaw = playerData.filter(d => d.player === "Elias Pettersson");
+    const epSeasonMap = d3.rollup(epDataRaw, v => d3.sum(v, d => +d.points), d => d.season);
+    const epTrendData = Array.from(epSeasonMap, ([season, points]) => ({ season, points }))
+                             .sort((a, b) => a.season.localeCompare(b.season));
+    renderEPChart(epTrendData);
 
 }).catch(err => console.error("Error loading CSV files:", err));
 
