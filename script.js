@@ -90,6 +90,33 @@ Promise.all([
   );
 });
 
+/* ─── VIZ 1 QUIZ ─── */
+let quizSelected = null;
+const QUIZ_CORRECT = 0;
+function selectCard(idx) {
+  quizSelected = idx;
+  document.querySelectorAll('.quiz-card').forEach(c => c.classList.remove('selected'));
+  document.querySelector('.quiz-card[data-idx="' + idx + '"]').classList.add('selected');
+  document.getElementById('submitBtn').disabled = false;
+}
+function submitQuiz() {
+  if (quizSelected === null) return;
+  document.querySelectorAll('.quiz-card').forEach(c => c.onclick = null);
+  document.getElementById('submitBtn').style.display = 'none';
+  document.querySelectorAll('.quiz-card').forEach((c, i) => {
+    c.classList.remove('selected');
+    if (i === QUIZ_CORRECT) c.classList.add('correct');
+    else if (i === quizSelected && quizSelected !== QUIZ_CORRECT) c.classList.add('wrong');
+  });
+  document.getElementById(quizSelected === QUIZ_CORRECT ? 'correctFb' : 'wrongFb').style.display = 'block';
+}
+function revealChart() {
+  const chartBox = document.querySelector('#viz1 .d1');
+  if (!chartBox) return;
+  chartBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+
 /* ─────────────────────────────────────────────
    INIT CHARTS ON SCROLL
 ───────────────────────────────────────────── */

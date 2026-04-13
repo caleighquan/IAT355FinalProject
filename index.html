@@ -77,6 +77,45 @@
         across the past five seasons. It highlights how offensive production is distributed 
         among key players rather than evenly across the team.</p>
     </div>
+  <!-- ══ QUIZ BLOCK ══ -->
+  <div class="rv quiz-wrap" id="quizBlock">
+    <p class="quiz-prompt">Before we reveal the data</p>
+    <p class="quiz-q">Who is the top goal scorer on the Canucks<br>over the past 5 seasons?</p>
+
+    <div class="quiz-options" id="quizOptions">
+      <div class="quiz-card" data-idx="0" onclick="selectCard(0)">
+        <div class="quiz-radio"><div class="quiz-radio-dot"></div></div>
+        <div><div class="quiz-name">Elias Pettersson</div><div class="quiz-sub">C · #40 · Sweden</div></div>
+      </div>
+      <div class="quiz-card" data-idx="1" onclick="selectCard(1)">
+        <div class="quiz-radio"><div class="quiz-radio-dot"></div></div>
+        <div><div class="quiz-name">Brock Boeser</div><div class="quiz-sub">RW · #6 · USA</div></div>
+      </div>
+      <div class="quiz-card" data-idx="2" onclick="selectCard(2)">
+        <div class="quiz-radio"><div class="quiz-radio-dot"></div></div>
+        <div><div class="quiz-name">J.T. Miller</div><div class="quiz-sub">C/LW · #9 · USA</div></div>
+      </div>
+      <div class="quiz-card" data-idx="3" onclick="selectCard(3)">
+        <div class="quiz-radio"><div class="quiz-radio-dot"></div></div>
+        <div><div class="quiz-name">Conor Garland</div><div class="quiz-sub">RW · #8 · Canada</div></div>
+      </div>
+    </div>
+
+    <button class="quiz-btn" id="submitBtn" onclick="submitQuiz()" disabled>Reveal the answer</button>
+
+    <div class="quiz-fb correct-fb" id="correctFb">
+      <div class="quiz-fb-title">&#10003; That's right!</div>
+      <div class="quiz-fb-body">Elias Pettersson leads all Canucks with <strong>138 goals</strong> across 2021–2026 — 16 more than Brock Boeser in second. Scroll down to see how the team's scoring is distributed.</div>
+      <button class="quiz-reveal-btn" onclick="revealChart()">See the full chart ↓</button>
+    </div>
+
+    <div class="quiz-fb wrong-fb" id="wrongFb">
+      <div class="quiz-fb-title">Not quite —</div>
+      <div class="quiz-fb-body">The answer is <strong>Elias Pettersson</strong>, with <strong>138 goals</strong> across five seasons. Let's see how the rest of the top 15 stacks up.</div>
+      <button class="quiz-reveal-btn" onclick="revealChart()">See the full chart ↓</button>
+    </div>
+  </div>
+
     <div class="rv d1">
       <div class="chart-box">
         <div class="ctitle">Total goals scored · Top 15 players · 2021–2026 combined</div>
