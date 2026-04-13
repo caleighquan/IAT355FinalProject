@@ -196,7 +196,7 @@ function buildOverviewBars(TEAM) {
 }
 
 /* ═══════════════════════════════════════
-   VIZ 1 – TOP 15 PLAYERS BAR CHART
+   VIZ 1 - TOP 15 PLAYERS BAR CHART
 ═══════════════════════════════════════ */
 function drawV1(TOP15) {
   const box = document.querySelector('#viz1 .chart-box');
@@ -269,7 +269,7 @@ function drawV1(TOP15) {
 }
 
 /* ═══════════════════════════════════════
-   VIZ 2 – SCATTERPLOT
+   VIZ 2 - SCATTERPLOT
 ═══════════════════════════════════════ */
 function drawV2(TEAM) {
   const box = document.querySelector('#viz2 .chart-box');
@@ -341,7 +341,7 @@ function drawV2(TEAM) {
 }
 
 /* ═══════════════════════════════════════
-   VIZ 3 (Visualisation 03) – POWER PLAY & PENALTY KILL
+   VIZ 3 (Visualisation 03) - POWER PLAY & PENALTY KILL
 ═══════════════════════════════════════ */
 function drawV4(SPECIAL, seasons) {
   const box = document.querySelector('#viz4 .chart-box');
@@ -458,7 +458,7 @@ function drawV4(SPECIAL, seasons) {
 }
 
 /* ═══════════════════════════════════════
-   VIZ 4 (Visualisation 04) – DUAL LINE (EP vs TEAM)
+   VIZ 4 (Visualisation 04) - DUAL LINE (EP vs TEAM)
 ═══════════════════════════════════════ */
 function drawV3(EP, seasons) {
   const box = document.querySelector('#viz3 .chart-box');
