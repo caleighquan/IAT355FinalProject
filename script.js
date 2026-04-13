@@ -1,7 +1,7 @@
 /* ─────────────────────────────────────────────
    NAV DOTS
 ───────────────────────────────────────────── */
-const SEC = ['hero','approach','viz1','tx1','viz2','ep-profile','viz3'];
+const SEC = ['hero','overview','approach','viz1','tx1','viz2','viz4','ep-profile','viz3'];
 const dots = document.querySelectorAll('.ndot');
 dots.forEach((d, i) => d.addEventListener('click', () =>
   document.getElementById(SEC[i]).scrollIntoView({ behavior: 'smooth' })
@@ -25,12 +25,55 @@ const showTip = (html, x, y) => { TIP.innerHTML = html; TIP.style.opacity = 1; T
 const moveTip = (x, y) => { TIP.style.left = (x + 18) + 'px'; TIP.style.top = (y - 14) + 'px'; };
 const hideTip = () => { TIP.style.opacity = 0; };
 
-const SEASONS = ['2021-22','2022-23','2023-24','2024-25','2025-26'];
-
 /* ─────────────────────────────────────────────
    SEASON LABEL NORMALISER (hyphen -> en-dash)
 ───────────────────────────────────────────── */
 const normSeason = s => s.replace(/-/g, '\u2013').trim();
+
+/* ─────────────────────────────────────────────
+   QUIZ LOGIC
+───────────────────────────────────────────── */
+let selectedIdx = null;
+const CORRECT_IDX = 0; // Elias Pettersson
+
+function selectCard(idx) {
+  selectedIdx = idx;
+  document.querySelectorAll('.quiz-card').forEach((c, i) => {
+    c.classList.toggle('selected', i === idx);
+  });
+  document.getElementById('submitBtn').disabled = false;
+}
+
+function submitQuiz() {
+  const correctFb = document.getElementById('correctFb');
+  const wrongFb   = document.getElementById('wrongFb');
+  const options   = document.getElementById('quizOptions');
+
+  // Mark correct / wrong on cards
+  document.querySelectorAll('.quiz-card').forEach((c, i) => {
+    if (i === CORRECT_IDX) c.classList.add('correct');
+    else if (i === selectedIdx) c.classList.add('wrong');
+    c.style.pointerEvents = 'none';
+  });
+
+  document.getElementById('submitBtn').style.display = 'none';
+
+  if (selectedIdx === CORRECT_IDX) {
+    correctFb.style.display = 'block';
+  } else {
+    wrongFb.style.display = 'block';
+  }
+}
+
+function revealChart() {
+  document.getElementById('quizBlock').style.display = 'none';
+  const chartArea = document.getElementById('chartArea1');
+  const insGrid   = document.getElementById('insGrid1');
+  chartArea.style.display = 'block';
+  insGrid.style.display   = 'grid';
+  // Trigger the chart draw immediately since section is already visible
+  if (window._TOP15) drawV1(window._TOP15);
+}
 
 /* ═══════════════════════════════════════════════════════════
    LOAD BOTH FULL DATASETS, DERIVE AND DRAW
@@ -40,6 +83,7 @@ Promise.all([
   d3.csv("canucks_team_stats_2021_2026.csv")
 ]).then(([players, teams]) => {
 
+  /* ── Coerce player types ─────────────────────────────── */
   players.forEach(d => {
     d.Goals   = +d.goals;
     d.Assists = +d.assists;
@@ -49,21 +93,29 @@ Promise.all([
     d.Season  = normSeason(d.season);
   });
 
+  /* ── Coerce team types ───────────────────────────────── */
   teams.forEach(d => {
     d.Points       = +d.PTS;
     d.GoalsFor     = +d.GF;
     d.GoalsAgainst = +d.GA;
     d.GamesPlayed  = +d.GP;
+    d.PPpct        = +d['PP%'];
+    d.PKpct        = +d['PK%'];
     d.Playoffs     = d.Season === '2023-24';
     d.Season       = normSeason(d.Season);
   });
 
   const csvSeasons = [...new Set(teams.map(d => d.Season))].sort();
 
+  /* ── VIZ 1: Top 15 players by total goals ────────────── */
   const goalsByPlayer = d3.rollup(players, v => d3.sum(v, d => d.Goals), d => d.Player);
   const TOP15 = Array.from(goalsByPlayer, ([name, goals]) => ({ name, goals }))
     .sort((a, b) => b.goals - a.goals).slice(0, 15);
 
+  // Store globally so revealChart() can access it
+  window._TOP15 = TOP15;
+
+  /* ── VIZ 2: GF/GA per game per season ───────────────── */
   const TEAM = teams.map(d => ({
     s:   d.Season,
     pts: d.Points,
@@ -72,6 +124,7 @@ Promise.all([
     po:  d.Playoffs
   })).sort((a, b) => csvSeasons.indexOf(a.s) - csvSeasons.indexOf(b.s));
 
+  /* ── VIZ 4 (Visualisation 04): EP points vs team standings points ── */
   const epRows = players.filter(d => d.Player && d.Player.includes('Pettersson'));
   const epBySeason = d3.rollup(epRows, v => d3.sum(v, d => d.Points), d => d.Season);
   const EP = csvSeasons.map(s => {
@@ -79,65 +132,75 @@ Promise.all([
     return { s, ep: epBySeason.get(s) || 0, tp: teamRow ? teamRow.Points : 0 };
   });
 
-  initCharts(TOP15, TEAM, EP, csvSeasons);
+  /* ── VIZ 3 (Visualisation 03): PP% and PK% per season ── */
+  const SPECIAL = teams.map(d => ({
+    s:  d.Season,
+    pp: d.PPpct,
+    pk: d.PKpct,
+    po: d.Playoffs
+  })).sort((a, b) => csvSeasons.indexOf(a.s) - csvSeasons.indexOf(b.s));
+
+  /* ── Season overview bars ────────────────────────────── */
+  buildOverviewBars(TEAM);
+
+  /* ── Wire up intersection-triggered chart draws ──────── */
+  const drawn = {};
+  const cObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting || drawn[e.target.id]) return;
+      drawn[e.target.id] = true;
+      if (e.target.id === 'viz2') drawV2(TEAM);
+      if (e.target.id === 'viz3') drawV3(EP, csvSeasons);
+      if (e.target.id === 'viz4') drawV4(SPECIAL, csvSeasons);
+      // viz1 is triggered by revealChart() after quiz interaction
+    });
+  }, { threshold: 0.22 });
+  ['viz2','viz3','viz4'].forEach(id => cObs.observe(document.getElementById(id)));
 
 }).catch(err => {
   console.error('Failed to load CSV data:', err);
   document.body.insertAdjacentHTML('afterbegin',
     '<div style="position:fixed;top:0;left:0;right:0;background:#c0392b;color:#fff;padding:12px 20px;z-index:9999;font-family:Inter,sans-serif;font-size:0.85rem;">' +
-    '⚠ Could not load data files. Ensure canucks_player_stats_2021_2026_combined.csv and canucks_team_stats_2021_2026.csv are in the same directory.' +
+    '\u26A0 Could not load data files. Ensure the CSV files are in the same directory as index.html.' +
     '</div>'
   );
 });
 
-/* ─── VIZ 1 QUIZ ─── */
-let quizSelected = null;
-const QUIZ_CORRECT = 0;
-function selectCard(idx) {
-  quizSelected = idx;
-  document.querySelectorAll('.quiz-card').forEach(c => c.classList.remove('selected'));
-  document.querySelector('.quiz-card[data-idx="' + idx + '"]').classList.add('selected');
-  document.getElementById('submitBtn').disabled = false;
-}
-function submitQuiz() {
-  if (quizSelected === null) return;
-  document.querySelectorAll('.quiz-card').forEach(c => c.onclick = null);
-  document.getElementById('submitBtn').style.display = 'none';
-  document.querySelectorAll('.quiz-card').forEach((c, i) => {
-    c.classList.remove('selected');
-    if (i === QUIZ_CORRECT) c.classList.add('correct');
-    else if (i === quizSelected && quizSelected !== QUIZ_CORRECT) c.classList.add('wrong');
+/* ═══════════════════════════════════════
+   SEASON OVERVIEW BARS  (built from team CSV)
+═══════════════════════════════════════ */
+function buildOverviewBars(TEAM) {
+  const maxPts = 130; // scale denominator
+  const container = document.getElementById('sbars');
+  if (!container) return;
+
+  // Sort chronologically
+  const sorted = [...TEAM].sort((a, b) => a.s.localeCompare(b.s));
+
+  let html = '';
+  sorted.forEach(d => {
+    const wPct = (d.pts / maxPts * 100).toFixed(1);
+    const tagClass = d.po ? 'p' : (d.pts === d3.min(sorted, x => x.pts) ? 'l' : 'm');
+    const tagLabel = d.po ? 'Playoffs' : (tagClass === 'l' ? 'Last Place' : 'Missed');
+    const peakClass = d.po ? ' peak' : '';
+    html +=
+      '<div class="s-row">' +
+        '<div class="s-yr">' + d.s + '</div>' +
+        '<div class="s-track"><div class="s-fill' + peakClass + '" style="width:' + wPct + '%">' +
+          '<span class="s-pts">' + d.pts + ' pts' + (d.po ? ' \u2605' : '') + '</span>' +
+        '</div></div>' +
+        '<span class="s-tag ' + tagClass + '">' + tagLabel + '</span>' +
+      '</div>';
   });
-  document.getElementById(quizSelected === QUIZ_CORRECT ? 'correctFb' : 'wrongFb').style.display = 'block';
-}
-function revealChart() {
-  const chartBox = document.querySelector('#viz1 .d1');
-  if (!chartBox) return;
-  chartBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
-
-
-/* ─────────────────────────────────────────────
-   INIT CHARTS ON SCROLL
-───────────────────────────────────────────── */
-function initCharts(TOP15, TEAM, EP, seasons) {
-  let d1 = false, d2 = false, d3f = false;
-  const cObs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (!e.isIntersecting) return;
-      if (e.target.id === 'viz1' && !d1)  { d1  = true; drawV1(TOP15); }
-      if (e.target.id === 'viz2' && !d2)  { d2  = true; drawV2(TEAM); }
-      if (e.target.id === 'viz3' && !d3f) { d3f = true; drawV3(EP, seasons); }
-    });
-  }, { threshold: 0.22 });
-  ['viz1','viz2','viz3'].forEach(id => cObs.observe(document.getElementById(id)));
+  container.innerHTML = html;
 }
 
 /* ═══════════════════════════════════════
-   VIZ 1 - TOP 15 PLAYERS BAR CHART
+   VIZ 1 – TOP 15 PLAYERS BAR CHART
 ═══════════════════════════════════════ */
 function drawV1(TOP15) {
   const box = document.querySelector('#viz1 .chart-box');
+  if (!box) return;
   const W = box.clientWidth - 88, H = 420;
   const m = { top:16, right:20, bottom:80, left:48 };
   const iw = W - m.left - m.right, ih = H - m.top - m.bottom;
@@ -206,7 +269,7 @@ function drawV1(TOP15) {
 }
 
 /* ═══════════════════════════════════════
-   VIZ 2 - SCATTERPLOT
+   VIZ 2 – SCATTERPLOT
 ═══════════════════════════════════════ */
 function drawV2(TEAM) {
   const box = document.querySelector('#viz2 .chart-box');
@@ -278,7 +341,124 @@ function drawV2(TEAM) {
 }
 
 /* ═══════════════════════════════════════
-   VIZ 3 - DUAL LINE (EP vs TEAM)
+   VIZ 3 (Visualisation 03) – SPECIAL TEAMS DUAL LINE
+═══════════════════════════════════════ */
+function drawV4(SPECIAL, seasons) {
+  const box = document.querySelector('#viz4 .chart-box');
+  const W = box.clientWidth - 88, H = 380;
+  const m = { top:30, right:60, bottom:54, left:62 };
+  const iw = W - m.left - m.right, ih = H - m.top - m.bottom;
+
+  const svg = d3.select('#ch4').attr('width', W).attr('height', H);
+  const g = svg.append('g').attr('transform', 'translate(' + m.left + ',' + m.top + ')');
+
+  const ppVals = SPECIAL.map(d => d.pp);
+  const pkVals = SPECIAL.map(d => d.pk);
+  const allVals = ppVals.concat(pkVals);
+  const yMin = Math.floor(d3.min(allVals) - 2);
+  const yMax = Math.ceil(d3.max(allVals) + 2);
+
+  const xS = d3.scalePoint().domain(seasons).range([0, iw]).padding(0.28);
+  const y  = d3.scaleLinear().domain([yMin, yMax]).range([ih, 0]);
+
+  /* Grid lines */
+  g.append('g').attr('class','grid').call(d3.axisLeft(y).tickSize(-iw).tickFormat('').ticks(6));
+
+  /* Playoff season highlight */
+  const poSeason = SPECIAL.find(d => d.po);
+  if (poSeason) {
+    const px = xS(poSeason.s), bw = xS.step();
+    g.append('rect')
+     .attr('x', px - bw * 0.3).attr('y', 0)
+     .attr('width', bw * 0.6).attr('height', ih)
+     .attr('fill','rgba(0,132,61,0.05)').attr('rx',4);
+    g.append('text')
+     .attr('x', px).attr('y', 12)
+     .style('text-anchor','middle').style('fill','rgba(0,168,77,0.38)')
+     .style('font-size','9px').style('font-family','Inter').style('letter-spacing','0.13em')
+     .text('PLAYOFFS');
+  }
+
+  /* Axes */
+  g.append('g').attr('class','axis').attr('transform','translate(0,' + ih + ')')
+   .call(d3.axisBottom(xS).tickSize(0).tickPadding(12));
+  g.append('g').attr('class','axis')
+   .call(d3.axisLeft(y).ticks(6).tickSize(0).tickPadding(8)
+     .tickFormat(d => d + '%'));
+
+  /* Y axis label */
+  g.append('text').attr('transform','rotate(-90)').attr('x',-ih/2).attr('y',-50)
+   .style('text-anchor','middle').style('fill','rgba(122,143,173,0.7)')
+   .style('font-size','10px').style('font-family','Inter').text('Percentage (%)');
+
+  /* PP% line */
+  const lPP = d3.line().x(d => xS(d.s)).y(d => y(d.pp)).curve(d3.curveCatmullRom);
+  g.append('path').datum(SPECIAL).attr('fill','none')
+   .attr('stroke','var(--green)').attr('stroke-width',2.5).attr('d',lPP);
+
+  /* PK% line */
+  const lPK = d3.line().x(d => xS(d.s)).y(d => y(d.pk)).curve(d3.curveCatmullRom);
+  g.append('path').datum(SPECIAL).attr('fill','none')
+   .attr('stroke','rgba(255,180,0,0.75)').attr('stroke-width',2.5).attr('d',lPK);
+
+  /* PP% dots */
+  g.selectAll('.ppd').data(SPECIAL).enter().append('circle').attr('class','ppd')
+   .attr('cx', d => xS(d.s)).attr('cy', d => y(d.pp)).attr('r', 6)
+   .attr('fill','var(--green)').attr('stroke','var(--navy-dk)').attr('stroke-width',2)
+   .style('cursor','pointer')
+   .on('mouseover', function(ev, d) {
+     d3.select(this).attr('r', 11);
+     showTip(
+       '<div class="tt">' + d.s + '</div>' +
+       '<div class="tr"><span>Power Play %</span><span class="tv">' + d.pp.toFixed(2) + '%</span></div>' +
+       '<div class="tr"><span>Penalty Kill %</span><span class="tv">' + d.pk.toFixed(2) + '%</span></div>' +
+       '<div class="tr"><span>Playoffs</span><span class="tv">' + (d.po ? '\u2713 Yes' : '\u2717 No') + '</span></div>',
+       ev.clientX, ev.clientY
+     );
+   })
+   .on('mousemove', ev => moveTip(ev.clientX, ev.clientY))
+   .on('mouseout', function() { d3.select(this).attr('r', 6); hideTip(); });
+
+  /* PP% labels */
+  g.selectAll('.ppl').data(SPECIAL).enter().append('text').attr('class','ppl')
+   .attr('x', d => xS(d.s)).attr('y', d => y(d.pp) - 12)
+   .style('text-anchor','middle').style('fill','#00D45A')
+   .style('font-size','10px').style('font-family','Inter').style('font-weight','600')
+   .text(d => d.pp.toFixed(1) + '%');
+
+  /* PK% dots */
+  g.selectAll('.pkd').data(SPECIAL).enter().append('circle').attr('class','pkd')
+   .attr('cx', d => xS(d.s)).attr('cy', d => y(d.pk)).attr('r', 6)
+   .attr('fill','rgba(255,180,0,0.75)').attr('stroke','var(--navy-dk)').attr('stroke-width',2)
+   .style('cursor','pointer')
+   .on('mouseover', function(ev, d) {
+     d3.select(this).attr('r', 11);
+     showTip(
+       '<div class="tt">' + d.s + '</div>' +
+       '<div class="tr"><span>Penalty Kill %</span><span class="tv">' + d.pk.toFixed(2) + '%</span></div>' +
+       '<div class="tr"><span>Power Play %</span><span class="tv">' + d.pp.toFixed(2) + '%</span></div>' +
+       '<div class="tr"><span>Playoffs</span><span class="tv">' + (d.po ? '\u2713 Yes' : '\u2717 No') + '</span></div>',
+       ev.clientX, ev.clientY
+     );
+   })
+   .on('mousemove', ev => moveTip(ev.clientX, ev.clientY))
+   .on('mouseout', function() { d3.select(this).attr('r', 6); hideTip(); });
+
+  /* PK% labels */
+  g.selectAll('.pkl').data(SPECIAL).enter().append('text').attr('class','pkl')
+   .attr('x', d => xS(d.s)).attr('y', d => y(d.pk) + 22)
+   .style('text-anchor','middle').style('fill','rgba(255,180,0,0.85)')
+   .style('font-size','10px').style('font-family','Inter').style('font-weight','600')
+   .text(d => d.pk.toFixed(1) + '%');
+
+  /* Legend */
+  document.getElementById('leg4').innerHTML =
+    '<div class="cli"><div class="clc" style="background:var(--green)"></div><span class="cll">Power Play %</span></div>' +
+    '<div class="cli"><div class="clc" style="background:rgba(255,180,0,0.75)"></div><span class="cll">Penalty Kill %</span></div>';
+}
+
+/* ═══════════════════════════════════════
+   VIZ 4 (Visualisation 04) – DUAL LINE (EP vs TEAM)
 ═══════════════════════════════════════ */
 function drawV3(EP, seasons) {
   const box = document.querySelector('#viz3 .chart-box');

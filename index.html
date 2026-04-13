@@ -12,21 +12,22 @@
 </head>
 <body>
 
-
 <nav class="ndots" id="navDots">
-  <div class="ndot on"   data-s="hero"       title="Introduction"></div>
-  <div class="ndot"      data-s="approach"   title="Approach"></div>
-  <div class="ndot"      data-s="viz1"       title="Top Scorers"></div>
-  <div class="ndot"      data-s="tx1"        title="Both Sides"></div>
-  <div class="ndot"      data-s="viz2"       title="Team Balance"></div>
-  <div class="ndot"      data-s="ep-profile"   title="Pettersson"></div>
-  <div class="ndot"      data-s="viz3"       title="Star Impact"></div>
+  <div class="ndot on"  data-s="hero"       title="Introduction"></div>
+  <div class="ndot"     data-s="overview"   title="Overview"></div>
+  <div class="ndot"     data-s="approach"   title="Approach"></div>
+  <div class="ndot"     data-s="viz1"       title="Top Scorers"></div>
+  <div class="ndot"     data-s="tx1"        title="Both Sides"></div>
+  <div class="ndot"     data-s="viz2"       title="Team Balance"></div>
+  <div class="ndot"     data-s="viz4"       title="Special Teams"></div>
+  <div class="ndot"     data-s="ep-profile" title="Pettersson"></div>
+  <div class="ndot"     data-s="viz3"       title="Star Impact"></div>
 </nav>
 
 <div id="tip"></div>
 
 <!-- ══════════════════════════════════════
-    HERO
+     HERO
 ══════════════════════════════════════ -->
 <section id="hero">
   <div class="hero-inner">
@@ -51,94 +52,122 @@
 </section>
 
 <!-- ══════════════════════════════════════
-    APPROACH
+     SEASON OVERVIEW
+══════════════════════════════════════ -->
+<section id="overview">
+  <div class="wrap">
+    <div class="rv">
+      <p class="chip">Season Overview</p>
+      <h2 class="st">Five Seasons.<br><em>One Bright Spot.</em></h2>
+    </div>
+    <div class="ov-grid">
+      <div class="rv d1 ov-body">
+        <p>Since entering the league in 1970, the Vancouver Canucks have been a streaky team. Periods of strong performance are often followed by sharp downturns — and the past five seasons reflect that pattern precisely.</p>
+        <p>Across five different team iterations, the Canucks made the playoffs just <strong>once</strong>. That was in 2024, when they posted the best record in their division at <strong>50–23–9</strong>, earning 109 standings points.</p>
+        <p>Two years later, they find themselves dead last in the league — with one of the worst seasons in franchise history.</p>
+        <span class="hook">How did we get here?</span>
+      </div>
+      <div class="rv d2">
+        <div class="tl-head">
+          <span class="tl-lbl">Season</span>
+          <span class="tl-lbl">Standings Points</span>
+        </div>
+        <div id="sbars"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     APPROACH
 ══════════════════════════════════════ -->
 <section id="approach">
   <div class="wrap">
     <div class="rv">
       <p class="chip">Methodology</p>
       <h2 class="st">Our <em>Approach</em></h2>
-      <p class="lead">We focused on keeping the data consistent and comparable across seasons. 
-        Each NHL team plays 82 games in the regular season, so we used regular season data only. 
+      <p class="lead">We focused on keeping the data consistent and comparable across seasons.
+        Each NHL team plays 82 games in the regular season, so we used regular season data only.
         This allowed us to fairly compare performance year over year without the variability of playoff games.</p>
     </div>
   </div>
 </section>
 
 <!-- ══════════════════════════════════════
-    VIZ 1 – TOP SCORERS
+     VIZ 1 – TOP SCORERS
 ══════════════════════════════════════ -->
 <section id="viz1">
   <div class="wrap">
     <div class="rv viz-hd">
       <p class="chip">Visualisation 01</p>
       <h2 class="st">Who Drives the<br><em>Canucks' Offence?</em></h2>
-      <p class="lead">This visualization shows the top goal scorers for the Vancouver Canucks 
-        across the past five seasons. It highlights how offensive production is distributed 
+      <p class="lead">This visualization shows the top goal scorers for the Vancouver Canucks
+        across the past five seasons. It highlights how offensive production is distributed
         among key players rather than evenly across the team.</p>
     </div>
-  <!-- ══ QUIZ BLOCK ══ -->
-  <div class="rv quiz-wrap" id="quizBlock">
-    <p class="quiz-prompt">Before we reveal the data</p>
-    <p class="quiz-q">Who is the top goal scorer on the Canucks<br>over the past 5 seasons?</p>
 
-    <div class="quiz-options" id="quizOptions">
-      <div class="quiz-card" data-idx="0" onclick="selectCard(0)">
-        <div class="quiz-radio"><div class="quiz-radio-dot"></div></div>
-        <div><div class="quiz-name">Elias Pettersson</div><div class="quiz-sub">C · #40 · Sweden</div></div>
+    <!-- ══ QUIZ BLOCK ══ -->
+    <div class="rv quiz-wrap" id="quizBlock">
+      <p class="quiz-prompt">Before we reveal the data</p>
+      <p class="quiz-q">Who is the top goal scorer on the Canucks<br>over the past 5 seasons?</p>
+
+      <div class="quiz-options" id="quizOptions">
+        <div class="quiz-card" data-idx="0" onclick="selectCard(0)">
+          <div class="quiz-radio"><div class="quiz-radio-dot"></div></div>
+          <div><div class="quiz-name">Elias Pettersson</div><div class="quiz-sub">C · #40 · Sweden</div></div>
+        </div>
+        <div class="quiz-card" data-idx="1" onclick="selectCard(1)">
+          <div class="quiz-radio"><div class="quiz-radio-dot"></div></div>
+          <div><div class="quiz-name">Brock Boeser</div><div class="quiz-sub">RW · #6 · USA</div></div>
+        </div>
+        <div class="quiz-card" data-idx="2" onclick="selectCard(2)">
+          <div class="quiz-radio"><div class="quiz-radio-dot"></div></div>
+          <div><div class="quiz-name">J.T. Miller</div><div class="quiz-sub">C/LW · #9 · USA</div></div>
+        </div>
+        <div class="quiz-card" data-idx="3" onclick="selectCard(3)">
+          <div class="quiz-radio"><div class="quiz-radio-dot"></div></div>
+          <div><div class="quiz-name">Conor Garland</div><div class="quiz-sub">RW · #8 · Canada</div></div>
+        </div>
       </div>
-      <div class="quiz-card" data-idx="1" onclick="selectCard(1)">
-        <div class="quiz-radio"><div class="quiz-radio-dot"></div></div>
-        <div><div class="quiz-name">Brock Boeser</div><div class="quiz-sub">RW · #6 · USA</div></div>
+
+      <button class="quiz-btn" id="submitBtn" onclick="submitQuiz()" disabled>Reveal the answer</button>
+
+      <div class="quiz-fb correct-fb" id="correctFb">
+        <div class="quiz-fb-title">&#10003; That's right!</div>
+        <div class="quiz-fb-body">Elias Pettersson leads all Canucks with <strong>138 goals</strong> across 2021–2026 — 16 more than Brock Boeser in second. Scroll down to see how the team's scoring is distributed.</div>
+        <button class="quiz-reveal-btn" onclick="revealChart()">See the full chart ↓</button>
       </div>
-      <div class="quiz-card" data-idx="2" onclick="selectCard(2)">
-        <div class="quiz-radio"><div class="quiz-radio-dot"></div></div>
-        <div><div class="quiz-name">J.T. Miller</div><div class="quiz-sub">C/LW · #9 · USA</div></div>
-      </div>
-      <div class="quiz-card" data-idx="3" onclick="selectCard(3)">
-        <div class="quiz-radio"><div class="quiz-radio-dot"></div></div>
-        <div><div class="quiz-name">Conor Garland</div><div class="quiz-sub">RW · #8 · Canada</div></div>
+
+      <div class="quiz-fb wrong-fb" id="wrongFb">
+        <div class="quiz-fb-title">Not quite —</div>
+        <div class="quiz-fb-body">The answer is <strong>Elias Pettersson</strong>, with <strong>138 goals</strong> across five seasons. Let's see how the rest of the top 15 stacks up.</div>
+        <button class="quiz-reveal-btn" onclick="revealChart()">See the full chart ↓</button>
       </div>
     </div>
 
-    <button class="quiz-btn" id="submitBtn" onclick="submitQuiz()" disabled>Reveal the answer</button>
-
-    <div class="quiz-fb correct-fb" id="correctFb">
-      <div class="quiz-fb-title">&#10003; That's right!</div>
-      <div class="quiz-fb-body">Elias Pettersson leads all Canucks with <strong>138 goals</strong> across 2021–2026 — 16 more than Brock Boeser in second. Scroll down to see how the team's scoring is distributed.</div>
-      <button class="quiz-reveal-btn" onclick="revealChart()">See the full chart ↓</button>
-    </div>
-
-    <div class="quiz-fb wrong-fb" id="wrongFb">
-      <div class="quiz-fb-title">Not quite —</div>
-      <div class="quiz-fb-body">The answer is <strong>Elias Pettersson</strong>, with <strong>138 goals</strong> across five seasons. Let's see how the rest of the top 15 stacks up.</div>
-      <button class="quiz-reveal-btn" onclick="revealChart()">See the full chart ↓</button>
-    </div>
-  </div>
-
-    <div class="rv d1">
+    <div class="rv d1" id="chartArea1" style="display:none;">
       <div class="chart-box">
         <div class="ctitle">Total goals scored · Top 15 players · 2021–2026 combined</div>
         <svg id="ch1"></svg>
       </div>
     </div>
-    <div class="ins-grid">
+    <div class="ins-grid" id="insGrid1" style="display:none;">
       <div class="ins-card rv d2">
         <div class="ins-n">01</div>
-        <p class="ins-t">The Canucks rely heavily on a few key players for scoring, 
+        <p class="ins-t">The Canucks rely heavily on a few key players for scoring,
           with most goals coming from a small group.</p>
       </div>
       <div class="ins-card rv d3">
         <div class="ins-n">02</div>
-        <p class="ins-t">This makes their performance inconsistent, as dips from 
-          these players can strongly impact the team’s overall results.</p>
+        <p class="ins-t">This makes their performance inconsistent, as dips from
+          these players can strongly impact the team's overall results.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ══════════════════════════════════════
-    TRANSITION
+     TRANSITION
 ══════════════════════════════════════ -->
 <section id="tx1">
   <div class="wrap">
@@ -150,15 +179,15 @@
 </section>
 
 <!-- ══════════════════════════════════════
-    VIZ 2 – TEAM BALANCE
+     VIZ 2 – TEAM BALANCE
 ══════════════════════════════════════ -->
 <section id="viz2">
   <div class="wrap">
     <div class="rv viz-hd">
       <p class="chip">Visualisation 02</p>
       <h2 class="st">Is the Team<br><em>Balanced?</em></h2>
-      <p class="lead">Goals for per game (offence) plotted against goals against per game (defence) 
-        across five seasons. The ideal zone elite scoring, stingy defence is where championships are 
+      <p class="lead">Goals for per game (offence) plotted against goals against per game (defence)
+        across five seasons. The ideal zone — elite scoring, stingy defence — is where championships are
         built. Where do the Canucks sit?</p>
     </div>
     <div class="rv d1">
@@ -170,12 +199,12 @@
     <div class="ins-grid">
       <div class="ins-card rv d2">
         <div class="ins-n">01</div>
-        <p class="ins-t">2023–24 is the clear outlier. The only season where Vancouver scored at an 
+        <p class="ins-t">2023–24 is the clear outlier. The only season where Vancouver scored at an
           elite pace while simultaneously holding opponents under 3.0 goals per game.</p>
       </div>
       <div class="ins-card rv d3">
         <div class="ins-n">02</div>
-        <p class="ins-t">In every other season, the Canucks conceded more than they scored on average 
+        <p class="ins-t">In every other season, the Canucks conceded more than they scored on average —
           a persistent structural imbalance that explains their struggle to sustain playoff contention.</p>
       </div>
     </div>
@@ -183,7 +212,41 @@
 </section>
 
 <!-- ══════════════════════════════════════
-    EP PROFILE
+     VIZ 3 – SPECIAL TEAMS
+══════════════════════════════════════ -->
+<section id="viz4">
+  <div class="wrap">
+    <div class="rv viz-hd">
+      <p class="chip">Visualisation 03</p>
+      <h2 class="st">Special Teams<br><em>Boom &amp; Bust</em></h2>
+      <p class="lead">Power play percentage and penalty kill percentage across five seasons.
+        Special teams are often the difference between winning and losing close games — how consistent
+        have the Canucks been when the rules change?</p>
+    </div>
+    <div class="rv d1">
+      <div class="chart-box">
+        <div class="ctitle">Power Play % &amp; Penalty Kill % · 2021–2026</div>
+        <svg id="ch4"></svg>
+        <div class="cleg" id="leg4"></div>
+      </div>
+    </div>
+    <div class="ins-grid">
+      <div class="ins-card rv d2">
+        <div class="ins-n">01</div>
+        <p class="ins-t">The power play peaked in their best seasons — 2022–23 and 2023–24 — when
+          Vancouver converted at over 22%, one of the stronger rates in the league.</p>
+      </div>
+      <div class="ins-card rv d3">
+        <div class="ins-n">02</div>
+        <p class="ins-t">The penalty kill has been the more volatile metric, collapsing dramatically
+          in 2025–26 to just 71.6% — a clear signal of defensive breakdown during a difficult rebuild.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     EP PROFILE
 ══════════════════════════════════════ -->
 <section id="ep-profile">
   <div class="wrap">
@@ -193,16 +256,16 @@
     </div>
     <div class="ep-pg">
       <div class="ep-bio rv d1">
-        <p>In early 2026, the Canucks traded away their captain <strong>Quinn Hughes</strong> 
-          in a blockbuster deal to Minnesota. Ever since his departure, fans and analysts have 
+        <p>In early 2026, the Canucks traded away their captain <strong>Quinn Hughes</strong>
+          in a blockbuster deal to Minnesota. Ever since his departure, fans and analysts have
           been speculating about who will wear the C on their chest next.</p>
-        <p>A name that keeps surfacing is <strong>Elias Pettersson</strong> the Swedish 
-          forward drafted 5th overall in 2017. He won the <strong>Calder Trophy</strong> in his 
-          rookie season and has since evolved into an NHL All-Star and the unquestioned centrepiece 
+        <p>A name that keeps surfacing is <strong>Elias Pettersson</strong> — the Swedish
+          forward drafted 5th overall in 2017. He won the <strong>Calder Trophy</strong> in his
+          rookie season and has since evolved into an NHL All-Star and the unquestioned centrepiece
           of Vancouver's offence.</p>
-        <p>Pettersson recently signed a <strong>long-term extension</strong> a statement to 
-          fans and the league that he is here for the long haul. Though hockey is a team sport, 
-          we expect our stars to shine and lead the way. So how has EP40 performed and what 
+        <p>Pettersson recently signed a <strong>long-term extension</strong> — a statement to
+          fans and the league that he is here for the long haul. Though hockey is a team sport,
+          we expect our stars to shine and lead the way. So how has EP40 performed — and what
           does it tell us about the Canucks' trajectory?</p>
       </div>
       <div class="rv d2">
@@ -239,15 +302,15 @@
 </section>
 
 <!-- ══════════════════════════════════════
-    VIZ 3 – EP vs TEAM
+     VIZ 4 – EP vs TEAM
 ══════════════════════════════════════ -->
 <section id="viz3">
   <div class="wrap">
     <div class="rv viz-hd">
-      <p class="chip">Visualisation 03</p>
+      <p class="chip">Visualisation 04</p>
       <h2 class="st">Does the Star Player<br><em>Reflect Team Performance?</em></h2>
-      <p class="lead">Pettersson's personal points overlaid against Vancouver's team standings 
-        points across five seasons. When the lines move together, it confirms the team's fortunes 
+      <p class="lead">Pettersson's personal points overlaid against Vancouver's team standings
+        points across five seasons. When the lines move together, it confirms the team's fortunes
         are deeply intertwined with their star player.</p>
     </div>
     <div class="rv d1">
@@ -265,19 +328,19 @@
       </div>
       <div class="ins-card rv d3">
         <div class="ins-n">02</div>
-        <p class="ins-t">The correlation is a double-edged sword: when EP40 excels, the 
-          team contends. When he struggles, the whole roster feels it, highlighting how 
+        <p class="ins-t">The correlation is a double-edged sword: when EP40 excels, the
+          team contends. When he struggles, the whole roster feels it, highlighting how
           critical his role is to any rebuild.</p>
       </div>
     </div>
   </div>
 </section>
 
-  <div class="footer">
-    <div class="flogo">Vancouver Canucks Data Story</div>
-    <div class="fnote"> 2021–22 • 2025–26 | IAT355: Data Visualizations</div>
-    <div class="fnote">Caleigh Quan, Brandon Wan, Sarah Luong</div>
-  </div>
+<div class="footer">
+  <div class="flogo">Vancouver Canucks Data Story</div>
+  <div class="fnote">2021–22 • 2025–26 | IAT355: Data Visualizations</div>
+  <div class="fnote">Caleigh Quan, Brandon Wan, Sarah Luong</div>
+</div>
 
 <script src="script.js"></script>
 </body>
