@@ -341,7 +341,7 @@ function drawV2(TEAM) {
 }
 
 /* ═══════════════════════════════════════
-   VIZ 3 (Visualisation 03) – SPECIAL TEAMS DUAL LINE
+   VIZ 3 (Visualisation 03) – POWER PLAY & PENALTY KILL
 ═══════════════════════════════════════ */
 function drawV4(SPECIAL, seasons) {
   const box = document.querySelector('#viz4 .chart-box');
