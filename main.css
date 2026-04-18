@@ -20,8 +20,18 @@ body {
   color: var(--white);
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
+  cursor: none;
 }
 ::selection { background: var(--green); color: #fff; }
+
+.fake-cursor {
+  position: fixed;
+  width: 40px;   /* 🔥 change size here */
+  height: 40px;
+  pointer-events: none; /* important */
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+}
 
 /* ─────────────────────────────────────────────
    NAV DOTS
