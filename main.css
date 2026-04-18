@@ -63,7 +63,7 @@ body {
   padding: 3px 8px; border-radius: 3px;
 }
 .ndot:hover::after { opacity: 1; }
-.ndot:hover { background: rgba(255,255,255,0.5); transform: scale(1.25); }
+.ndot:hover { background: rgba(255,255,255,0.5); transform: scale(1.25); cursor: none;}
 .ndot.on {
   background: var(--green); border-color: var(--green);
   transform: scale(1.55);
@@ -315,6 +315,7 @@ h2.st em { color: var(--green); font-style: normal; }
 .quiz-card:hover {
   background: rgba(255,255,255,0.04);
   border-color: rgba(255,255,255,0.22);
+  cursor: none;
 }
 .quiz-card.selected {
   background: rgba(0,132,61,0.1);
@@ -348,8 +349,9 @@ h2.st em { color: var(--green); font-style: normal; }
   background: var(--green); color: #fff;
   font-family: 'Oswald', sans-serif; font-size: 0.85rem;
   font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
-  border: none; border-radius: 6px; cursor: pointer;
+  border: none; border-radius: 6px;
   transition: all 0.2s var(--ease);
+  cursor: none;
 }
 .quiz-btn:disabled {
   background: rgba(255,255,255,0.08);
@@ -380,6 +382,7 @@ h2.st em { color: var(--green); font-style: normal; }
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: 5px; cursor: pointer;
   transition: all 0.2s var(--ease);
+  cursor: none;
 }
 .quiz-reveal-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
 
