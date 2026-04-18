@@ -23,7 +23,6 @@ body {
 }
 ::selection { background: var(--green); color: #fff; }
 
-
 /* ─────────────────────────────────────────────
    NAV DOTS
 ───────────────────────────────────────────── */
@@ -371,7 +370,7 @@ h2.st em { color: var(--green); font-style: normal; }
     #tx2 { background:var(--navy-dk); padding:130px 0; }
 
     /* ─── CONCLUSION ─── */
-    #conclusion { background:var(--navy-dk); padding:160px 0 100px; }
+    #conclusion { background:var(--navy-md); padding:160px 0 100px; }
     .con-intro { max-width:720px; margin-bottom:80px; }
     .con-body { font-size:1.05rem; font-weight:300; line-height:1.85; color:var(--grey-lt); margin-top:18px; }
     .tk-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-bottom:80px; }
@@ -411,11 +410,11 @@ h2.st em { color: var(--green); font-style: normal; }
 #ch2 { width:100%; display:block; }
 
 /* ─────────────────────────────────────────────
-       ⑦ EP INTRO
-    ───────────────────────────────────────────── */
+      EP INTRO
+───────────────────────────────────────────── */
     #ep-intro {
       min-height:100vh; display:flex; align-items:center;
-      background:var(--navy-md); padding:0; position:relative; overflow:hidden;
+      background:var(--navy-dk); padding:0; position:relative; overflow:hidden;
     }
     .ghost40 {
       position:absolute; right:-4vw; top:50%; transform:translateY(-50%);
@@ -474,7 +473,7 @@ h2.st em { color: var(--green); font-style: normal; }
 /* ─────────────────────────────────────────────
    EP PROFILE
 ───────────────────────────────────────────── */
-#ep-profile { background:var(--navy-dk); padding:140px 0; }
+#ep-profile { background:var(--navy-md); padding:140px 0; }
 .ep-pg { display:grid; grid-template-columns:1fr 1fr; gap:80px; margin-top:56px; }
 .ep-bio { font-size:1.02rem; font-weight:300; line-height:1.88; color:var(--grey-lt); }
 .ep-bio p+p { margin-top:22px; }
@@ -496,7 +495,7 @@ h2.st em { color: var(--green); font-style: normal; }
 /* ─────────────────────────────────────────────
    VIZ 4
 ───────────────────────────────────────────── */
-#viz4 { background:var(--navy-md); padding:140px 0; }
+#viz4 { background:var(--navy-dk); padding:140px 0; }
 #ch4 { width:100%; display:block; }
 
 /* ─────────────────────────────────────────────
@@ -506,6 +505,7 @@ h2.st em { color: var(--green); font-style: normal; }
   text-align: center;
   padding: 0 0 60px;
   color: var(--grey-lt);
+  background:var(--navy-md);
 }
 .footer .flogo {
   font-weight: 600;
