@@ -360,8 +360,8 @@ h2.st em { color: var(--green); font-style: normal; }
 /* ─────────────────────────────────────────────
    VIZ 3
 ───────────────────────────────────────────── */
-#viz4 { background:var(--navy-dk); padding:140px 0; }
-#ch4 { width:100%; display:block; }
+#viz3 { background:var(--navy-dk); padding:140px 0; }
+#ch3 { width:100%; display:block; }
 
 /* ─────────────────────────────────────────────
    EP PROFILE
@@ -388,8 +388,8 @@ h2.st em { color: var(--green); font-style: normal; }
 /* ─────────────────────────────────────────────
    VIZ 4
 ───────────────────────────────────────────── */
-#viz3 { background:var(--navy-dk); padding:140px 0; }
-#ch3 { width:100%; display:block; }
+#viz4 { background:var(--navy-dk); padding:140px 0; }
+#ch4 { width:100%; display:block; }
 
 /* ─────────────────────────────────────────────
    FOOTER
