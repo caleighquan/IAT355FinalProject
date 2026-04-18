@@ -79,8 +79,20 @@ body {
 /* ─────────────────────────────────────────────
    SCROLL-REVEAL
 ───────────────────────────────────────────── */
-.rv { opacity: 1; transform: none; }
-.rv.in { opacity: 1; transform: none; }
+.rv {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.75s ease, transform 0.75s ease;
+}
+.rv.in {
+  opacity: 1;
+  transform: none;
+}
+.d1 { transition-delay: 0.05s; }
+.d2 { transition-delay: 0.18s; }
+.d3 { transition-delay: 0.31s; }
+.d4 { transition-delay: 0.44s; }
+.d5 { transition-delay: 0.57s; }
 
 /* ─────────────────────────────────────────────
    SHARED LAYOUT
