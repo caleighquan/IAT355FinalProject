@@ -359,47 +359,69 @@ function drawV2(TEAM) {
    .style('fill','rgba(0,168,77)').style('font-size','9px').style('font-family','Inter').style('letter-spacing','0.13em')
    .text('IDEAL ZONE');
 
-  // ── GUESS CLICK HANDLER ──
+// ── GUESS DRAG HANDLER ──
   let guessed = false;
+  let dragStart = null;
   const chartBox = document.getElementById('chartBox2');
 
-  svg.on('click', function(event) {
+  // Live preview rect
+  const previewRect = g.append('rect')
+    .attr('fill', 'rgba(255,200,0,0.08)')
+    .attr('stroke', 'rgba(255,200,0,0.6)').attr('stroke-width', 2)
+    .attr('stroke-dasharray', '5,3').attr('rx', 4)
+    .style('opacity', 0).style('pointer-events', 'none');
+
+  svg.on('mousedown', function(event) {
     if (guessed) return;
+    dragStart = d3.pointer(event, g.node());
+    previewRect.style('opacity', 1);
+  });
+
+  svg.on('mousemove', function(event) {
+    if (!dragStart || guessed) return;
+    const [cx, cy] = d3.pointer(event, g.node());
+    const rx = Math.min(dragStart[0], cx);
+    const ry = Math.min(dragStart[1], cy);
+    const rw = Math.abs(cx - dragStart[0]);
+    const rh = Math.abs(cy - dragStart[1]);
+    previewRect.attr('x', rx).attr('y', ry).attr('width', rw).attr('height', rh);
+  });
+
+  svg.on('mouseup', function(event) {
+    if (!dragStart || guessed) return;
     guessed = true;
     chartBox.classList.add('guessed');
     document.getElementById('guessOverlay').classList.add('hidden');
 
-    // Convert click position to data coordinates
-    const [mx, my] = d3.pointer(event, g.node());
-    const guessGF = x.invert(mx);
-    const guessGA = y.invert(my);
+    const [ex, ey] = d3.pointer(event, g.node());
+    const rx = Math.min(dragStart[0], ex);
+    const ry = Math.min(dragStart[1], ey);
+    const rw = Math.abs(ex - dragStart[0]);
+    const rh = Math.abs(ey - dragStart[1]);
 
-    // Draw user's guess marker
-    const gw = iw - mx, gh = my;
-    g.append('rect')
-     .attr('x', mx).attr('y', 0)
-     .attr('width', gw).attr('height', gh)
-     .attr('fill', 'rgba(255,200,0,0.12)')
-     .attr('stroke', 'rgba(255,200,0,0.8)').attr('stroke-width', 2)
-     .attr('stroke-dasharray', '5,3').attr('rx', 4)
-     .style('opacity', 0)
-     .transition().duration(400).style('opacity', 1);
+    // Finalise the preview rect with a solid style
+    previewRect
+      .attr('x', rx).attr('y', ry).attr('width', rw).attr('height', rh)
+      .attr('fill', 'rgba(255,200,0,0.12)')
+      .attr('stroke', 'rgba(255,200,0,0.9)');
 
     g.append('text')
-     .attr('x', mx + gw/2).attr('y', 14)
-     .style('text-anchor','middle').style('fill','rgba(255,200,0,0.9)')
-     .style('font-size','9px').style('font-family','Inter').style('letter-spacing','0.12em')
-     .style('opacity', 0)
-     .text('YOUR GUESS')
-     .transition().duration(400).style('opacity', 1);
+      .attr('x', rx + rw / 2).attr('y', ry - 8)
+      .style('text-anchor','middle').style('fill','rgba(255,200,0,0.9)')
+      .style('font-size','9px').style('font-family','Inter').style('letter-spacing','0.12em')
+      .style('opacity', 0)
+      .text('YOUR GUESS')
+      .transition().duration(400).style('opacity', 1);
 
-    // Reveal ideal zone with a short delay
+    // Score based on centre of drawn box
+    const centrGF = x.invert(rx + rw / 2);
+    const centrGA = y.invert(ry + rh / 2);
+    const inIdeal = centrGF > 3.0 && centrGA < 3.1;
+    const dist = Math.sqrt(Math.pow(centrGF - 3.2, 2) + Math.pow(centrGA - 2.9, 2));
+    const isClose = dist < 0.5;
+
     setTimeout(() => {
       idealZone.transition().duration(700).style('opacity', 1);
-
-    const inIdeal = guessGF > 3.0 && guessGA < 3.1;
-          const dist = Math.sqrt(Math.pow(guessGF - 3.2, 2) + Math.pow(guessGA - 2.9, 2));
-          const isClose = dist < 0.5;
 
       const resultEl = document.getElementById('guessResult');
       const iconEl   = document.getElementById('guessIcon');
@@ -425,6 +447,8 @@ function drawV2(TEAM) {
 
       resultEl.style.display = 'block';
     }, 500);
+
+    dragStart = null;
   });
 }
 
