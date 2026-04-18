@@ -194,7 +194,7 @@ h2.st em { color: var(--green); font-style: normal; }
 ───────────────────────────────────────────── */
 .viz-hd { max-width:700px; margin-bottom:52px; }
 .chart-box {
-  background:rgba(255,255,255,0.02);
+  background:rgba(255,255,255,0.05);
   border:1px solid rgba(255,255,255,0.07);
   border-radius:12px; padding:44px;
   margin-bottom:34px; position:relative; overflow:hidden;
@@ -212,16 +212,16 @@ h2.st em { color: var(--green); font-style: normal; }
 .ins-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
 .ins-card {
   display:flex; gap:20px; padding:26px 28px;
-  background:rgba(255,255,255,0.02);
+  background:rgba(255,255,255,0.05);
   border:1px solid rgba(255,255,255,0.06);
   border-radius:8px; align-items:flex-start;
 }
-.ins-n { font-family:'Oswald',sans-serif; font-size:2.4rem; font-weight:700; color:rgba(0,132,61,0.22); line-height:1; flex-shrink:0; }
+.ins-n { font-family:'Oswald',sans-serif; font-size:2.4rem; font-weight:700; color:rgba(0,132,61); line-height:1; flex-shrink:0; }
 .ins-t { font-size:0.93rem; line-height:1.72; color:var(--grey-lt); padding-top:4px; }
 
 .axis text { fill:#7A8FAD; font-family:'Inter',sans-serif; font-size:11px; }
 .axis path, .axis line { stroke:rgba(255,255,255,0.07); }
-.grid line { stroke:rgba(255,255,255,0.04); stroke-dasharray:3,3; }
+.grid line { stroke:rgba(255,255,255,0.2); stroke-dasharray:3,3; }
 .grid path { stroke:none; }
 
 /* ─────────────────────────────────────────────
@@ -237,7 +237,7 @@ h2.st em { color: var(--green); font-style: normal; }
   max-width: 700px;
   margin: 0 0 52px;
   padding: 44px;
-  background: rgba(255,255,255,0.02);
+  background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.07);
   border-radius: 12px;
   position: relative;
@@ -262,13 +262,13 @@ h2.st em { color: var(--green); font-style: normal; }
 .quiz-card {
   display: flex; align-items: center; gap: 18px;
   padding: 16px 20px;
-  background: rgba(255,255,255,0.03);
+  background: rgba(255,255,255,0.07);
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 8px; cursor: pointer;
   transition: all 0.2s var(--ease);
 }
 .quiz-card:hover {
-  background: rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.04);
   border-color: rgba(255,255,255,0.22);
 }
 .quiz-card.selected {

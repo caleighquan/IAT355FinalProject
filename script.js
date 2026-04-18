@@ -288,9 +288,9 @@ function drawV2(TEAM) {
 
   const izX = x(3.15), izY = y(2.95);
   g.append('rect').attr('x',izX).attr('y',0).attr('width',iw-izX).attr('height',izY)
-   .attr('fill','rgba(0,132,61,0.055)').attr('stroke','rgba(0,132,61,0.18)').attr('stroke-width',1).attr('rx',4);
+   .attr('fill','rgba(0,132,61,0.2)').attr('stroke','rgba(0,132,61,0.4)').attr('stroke-width',1).attr('rx',4);
   g.append('text').attr('x',izX+9).attr('y',14)
-   .style('fill','rgba(0,168,77,0.45)').style('font-size','9px').style('font-family','Inter').style('letter-spacing','0.13em')
+   .style('fill','rgba(0,168,77)').style('font-size','9px').style('font-family','Inter').style('letter-spacing','0.13em')
    .text('IDEAL ZONE');
 
   g.append('g').attr('class','axis').attr('transform','translate(0,' + ih + ')').call(d3.axisBottom(x).ticks(5).tickSize(0).tickPadding(10));
@@ -371,10 +371,10 @@ function drawV3(SPECIAL, seasons) {
     g.append('rect')
      .attr('x', px - bw * 0.3).attr('y', 0)
      .attr('width', bw * 0.6).attr('height', ih)
-     .attr('fill','rgba(0,132,61,0.05)').attr('rx',4);
+     .attr('fill','rgba(0,132,61,0.2)').attr('rx',4);
     g.append('text')
      .attr('x', px).attr('y', 12)
-     .style('text-anchor','middle').style('fill','rgba(0,168,77,0.38)')
+     .style('text-anchor','middle').style('fill','rgba(0,168,77)')
      .style('font-size','9px').style('font-family','Inter').style('letter-spacing','0.13em')
      .text('PLAYOFFS');
   }
@@ -478,9 +478,9 @@ function drawV4(EP, seasons) {
   const px1 = xS(seasons[1]), px2 = xS(seasons[2]), bw = xS.step();
   g.append('rect').attr('x', px1 - bw*0.17).attr('y', 0)
    .attr('width', px2 - px1 + bw*0.34).attr('height', ih)
-   .attr('fill','rgba(0,132,61,0.05)').attr('rx',4);
+   .attr('fill','rgba(0,132,61,0.2)').attr('rx',4);
   g.append('text').attr('x', (px1+px2)/2).attr('y', 12)
-   .style('text-anchor','middle').style('fill','rgba(0,168,77,0.38)')
+   .style('text-anchor','middle').style('fill','rgba(0,168,77)')
    .style('font-size','9px').style('font-family','Inter').style('letter-spacing','0.13em')
    .text('PEAK YEARS');
 
