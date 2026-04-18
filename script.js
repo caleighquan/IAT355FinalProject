@@ -301,13 +301,7 @@ function drawV2(TEAM) {
   g.append('g').attr('class','grid').call(d3.axisLeft(y).tickSize(-iw).tickFormat('').ticks(5));
   g.append('g').attr('class','grid').attr('transform','translate(0,' + ih + ')').call(d3.axisBottom(x).tickSize(-ih).tickFormat('').ticks(5));
 
-  const izX = x(3.15), izY = y(2.95);
-  g.append('rect').attr('x',izX).attr('y',0).attr('width',iw-izX).attr('height',izY)
-   .attr('fill','rgba(0,132,61,0.2)').attr('stroke','rgba(0,132,61,0.4)').attr('stroke-width',1).attr('rx',4);
-  g.append('text').attr('x',izX+9).attr('y',14)
-   .style('fill','rgba(0,168,77)').style('font-size','9px').style('font-family','Inter').style('letter-spacing','0.13em')
-   .text('IDEAL ZONE');
-
+  // Axes
   g.append('g').attr('class','axis').attr('transform','translate(0,' + ih + ')').call(d3.axisBottom(x).ticks(5).tickSize(0).tickPadding(10));
   g.append('g').attr('class','axis').call(d3.axisLeft(y).ticks(5).tickSize(0).tickPadding(10));
 
@@ -318,10 +312,12 @@ function drawV2(TEAM) {
    .style('fill','rgba(122,143,173,0.7)').style('font-size','11px').style('font-family','Inter')
    .text('Goals Against Per Game  \u2192  (lower = better defence)');
 
+  // Connector lines between seasons
   const lineG = d3.line().x(d => x(d.gf)).y(d => y(d.ga)).curve(d3.curveCatmullRom);
   g.append('path').datum(TEAM).attr('fill','none').attr('stroke','rgba(255,255,255,0.08)')
    .attr('stroke-width',1.5).attr('stroke-dasharray','4,4').attr('d',lineG);
 
+  // Data points (drawn now, before guess)
   const pts = g.selectAll('.spt').data(TEAM).enter().append('g').attr('class','spt');
 
   pts.filter(d => d.po).append('circle')
@@ -352,6 +348,84 @@ function drawV2(TEAM) {
    .style('fill', d => d.po ? '#00D45A' : 'var(--grey-lt)')
    .style('font-size','10px').style('font-family','Inter').style('font-weight','500')
    .text(d => d.s);
+
+  // ── IDEAL ZONE (hidden until after guess) ──
+  const izX = x(3.0), izY = y(3.1);
+  const idealZone = g.append('g').attr('class','ideal-zone-g').style('opacity', 0);
+  idealZone.append('rect')
+   .attr('x',izX).attr('y',0).attr('width',iw-izX).attr('height',izY)
+   .attr('fill','rgba(0,132,61,0.2)').attr('stroke','rgba(0,132,61,0.4)').attr('stroke-width',1).attr('rx',4);
+  idealZone.append('text').attr('x',izX+9).attr('y',14)
+   .style('fill','rgba(0,168,77)').style('font-size','9px').style('font-family','Inter').style('letter-spacing','0.13em')
+   .text('IDEAL ZONE');
+
+  // ── GUESS CLICK HANDLER ──
+  let guessed = false;
+  const chartBox = document.getElementById('chartBox2');
+
+  svg.on('click', function(event) {
+    if (guessed) return;
+    guessed = true;
+    chartBox.classList.add('guessed');
+    document.getElementById('guessOverlay').classList.add('hidden');
+
+    // Convert click position to data coordinates
+    const [mx, my] = d3.pointer(event, g.node());
+    const guessGF = x.invert(mx);
+    const guessGA = y.invert(my);
+
+    // Draw user's guess marker
+    const gw = iw - mx, gh = my;
+    g.append('rect')
+     .attr('x', mx).attr('y', 0)
+     .attr('width', gw).attr('height', gh)
+     .attr('fill', 'rgba(255,200,0,0.12)')
+     .attr('stroke', 'rgba(255,200,0,0.8)').attr('stroke-width', 2)
+     .attr('stroke-dasharray', '5,3').attr('rx', 4)
+     .style('opacity', 0)
+     .transition().duration(400).style('opacity', 1);
+
+    g.append('text')
+     .attr('x', mx + gw/2).attr('y', 14)
+     .style('text-anchor','middle').style('fill','rgba(255,200,0,0.9)')
+     .style('font-size','9px').style('font-family','Inter').style('letter-spacing','0.12em')
+     .style('opacity', 0)
+     .text('YOUR GUESS')
+     .transition().duration(400).style('opacity', 1);
+
+    // Reveal ideal zone with a short delay
+    setTimeout(() => {
+      idealZone.transition().duration(700).style('opacity', 1);
+
+    const inIdeal = guessGF > 3.0 && guessGA < 3.1;
+          const dist = Math.sqrt(Math.pow(guessGF - 3.2, 2) + Math.pow(guessGA - 2.9, 2));
+          const isClose = dist < 0.5;
+
+      const resultEl = document.getElementById('guessResult');
+      const iconEl   = document.getElementById('guessIcon');
+      const titleEl  = document.getElementById('guessTitle');
+      const bodyEl   = document.getElementById('guessBody');
+
+      if (inIdeal) {
+        resultEl.classList.add('close');
+        iconEl.textContent  = '✓';
+        titleEl.textContent = 'Spot on!';
+        bodyEl.innerHTML    = 'You placed your guess inside the ideal zone — <strong>high scoring, low goals against</strong>. That\'s exactly where the 2023–24 Canucks landed, and why it was their only playoff season.';
+      } else if (isClose) {
+        resultEl.classList.add('close');
+        iconEl.textContent  = '◎';
+        titleEl.textContent = 'Close!';
+        bodyEl.innerHTML    = 'You were close. The ideal zone sits in the <strong>top-right corner</strong> — high goals for, low goals against. Only 2023–24 reached it across five seasons.';
+      } else {
+        resultEl.classList.add('far');
+        iconEl.textContent  = '✗';
+        titleEl.textContent = 'Not quite —';
+        bodyEl.innerHTML    = 'The ideal zone is the <strong>top-right corner</strong>: scoring lots while conceding little. It\'s rare — the Canucks only managed it once in five seasons, in 2023–24.';
+      }
+
+      resultEl.style.display = 'block';
+    }, 500);
+  });
 }
 
 /* ═══════════════════════════════════════

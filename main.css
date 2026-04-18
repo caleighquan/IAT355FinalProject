@@ -435,6 +435,75 @@ h2.st em { color: var(--green); font-style: normal; }
 #ch2 { width:100%; display:block; }
 
 /* ─────────────────────────────────────────────
+   VIZ 2 GUESS INTERACTION
+───────────────────────────────────────────── */
+.guess-prompt {
+  text-align: center;
+  padding: 36px 44px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  margin-bottom: 16px;
+  position: relative; overflow: hidden;
+}
+.guess-prompt::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,132,61,0.4), transparent);
+}
+.guess-prompt-q {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(1.1rem, 2vw, 1.45rem);
+  font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase;
+  color: #fff; margin-bottom: 10px;
+}
+.guess-prompt-q em { color: var(--green); font-style: normal; }
+.guess-prompt-hint {
+  font-size: 0.9rem; color: var(--grey-lt); line-height: 1.6;
+}
+
+.guess-overlay {
+  position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+  background: rgba(0,132,61,0.12); border: 1px solid rgba(0,132,61,0.3);
+  color: var(--green); font-size: 0.72rem; font-weight: 500;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  padding: 7px 18px; border-radius: 100px;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+.guess-overlay.hidden { opacity: 0; }
+
+#chartBox2 { cursor: crosshair; }
+#chartBox2.guessed { cursor: default; }
+
+.guess-result {
+  margin-bottom: 28px;
+  padding: 20px 26px;
+  border-radius: 10px;
+  animation: fadeUp 0.5s var(--ease) both;
+}
+.guess-result.close {
+  background: rgba(0,132,61,0.1); border: 1px solid rgba(0,168,77,0.3);
+}
+.guess-result.far {
+  background: rgba(180,100,0,0.08); border: 1px solid rgba(220,140,0,0.25);
+}
+.guess-result-inner { display: flex; align-items: flex-start; gap: 16px; }
+.guess-result-icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 2px; }
+.guess-result-title {
+  font-family: 'Oswald', sans-serif; font-size: 0.95rem; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 5px;
+}
+.guess-result.close .guess-result-title { color: var(--green-lt); }
+.guess-result.far .guess-result-title { color: #e0a040; }
+.guess-result-body { font-size: 0.88rem; line-height: 1.65; color: var(--grey-lt); }
+.guess-result-body strong { color: #fff; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ─────────────────────────────────────────────
       EP INTRO
 ───────────────────────────────────────────── */
     #ep-intro {

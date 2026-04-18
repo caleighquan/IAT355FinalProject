@@ -200,9 +200,25 @@
         built. Where do the Canucks sit?</p>
     </div>
     <div class="rv d1">
-      <div class="chart-box">
+      <!-- GUESS PROMPT (shown before interaction) -->
+      <div class="guess-prompt" id="guessPrompt">
+        <p class="guess-prompt-q">Where do you think the <em>ideal zone</em> is?</p>
+        <p class="guess-prompt-hint">Drag anywhere on the chart to place your guess 
+          high scoring, low goals against.</p>
+      </div>
+      <div class="chart-box" id="chartBox2">
         <div class="ctitle">Goals For / Game vs. Goals Against / Game · 2021-2026</div>
         <svg id="ch2"></svg>
+        <div class="guess-overlay" id="guessOverlay">Drag a box on the chart to place your guess</div>
+      </div>
+      <div class="guess-result" id="guessResult" style="display:none;">
+        <div class="guess-result-inner">
+          <span class="guess-result-icon" id="guessIcon"></span>
+          <div>
+            <div class="guess-result-title" id="guessTitle"></div>
+            <div class="guess-result-body" id="guessBody"></div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="ins-grid">
