@@ -258,7 +258,6 @@ function drawV1(TOP15) {
     .attr('rx', 3)
     .attr('fill', (d, i) => i < 4 ? 'var(--green)' : 'rgba(0,90,160,0.65)')
     .attr('opacity', 0.85)
-    .style('cursor','pointer')
     .on('mouseover', function(ev, d) {
       d3.select(this).attr('opacity', 1).attr('filter','brightness(1.3)');
       showTip(
@@ -333,7 +332,6 @@ function drawV2(TEAM) {
    .attr('cx', d => x(d.gf)).attr('cy', d => y(d.ga)).attr('r', 15)
    .attr('fill', d => d.po ? 'var(--green)' : 'rgba(255,255,255,0.1)')
    .attr('stroke', d => d.po ? '#00D45A' : 'rgba(255,255,255,0.38)').attr('stroke-width',2)
-   .style('cursor','pointer')
    .on('mouseover', function(ev, d) {
      d3.select(this).attr('r', 22);
      showTip(
@@ -421,7 +419,6 @@ function drawV3(SPECIAL, seasons) {
   g.selectAll('.ppd').data(SPECIAL).enter().append('circle').attr('class','ppd')
    .attr('cx', d => xS(d.s)).attr('cy', d => y(d.pp)).attr('r', 6)
    .attr('fill','var(--green)').attr('stroke','var(--navy-dk)').attr('stroke-width',2)
-   .style('cursor','pointer')
    .on('mouseover', function(ev, d) {
      d3.select(this).attr('r', 11);
      showTip(
@@ -446,7 +443,6 @@ function drawV3(SPECIAL, seasons) {
   g.selectAll('.pkd').data(SPECIAL).enter().append('circle').attr('class','pkd')
    .attr('cx', d => xS(d.s)).attr('cy', d => y(d.pk)).attr('r', 6)
    .attr('fill','rgba(255,180,0,0.75)').attr('stroke','var(--navy-dk)').attr('stroke-width',2)
-   .style('cursor','pointer')
    .on('mouseover', function(ev, d) {
      d3.select(this).attr('r', 11);
      showTip(
@@ -518,7 +514,6 @@ function drawV4(EP, seasons) {
   g.selectAll('.epd').data(EP).enter().append('circle').attr('class','epd')
    .attr('cx', d => xS(d.s)).attr('cy', d => yEP(d.ep)).attr('r', 6)
    .attr('fill','var(--green)').attr('stroke','var(--navy-dk)').attr('stroke-width',2.5)
-   .style('cursor','pointer')
    .on('mouseover', function(ev, d) {
      d3.select(this).attr('r', 11);
      showTip(
@@ -540,7 +535,6 @@ function drawV4(EP, seasons) {
   g.selectAll('.tpd').data(EP).enter().append('circle').attr('class','tpd')
    .attr('cx', d => xS(d.s)).attr('cy', d => yTP(d.tp)).attr('r', 5)
    .attr('fill','rgba(176,189,212,0.55)').attr('stroke','var(--navy-md)').attr('stroke-width',2)
-   .style('cursor','pointer')
    .on('mouseover', function(ev, d) {
      d3.select(this).attr('r', 9);
      showTip(
