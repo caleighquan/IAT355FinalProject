@@ -342,6 +342,35 @@ h2.st em { color: var(--green); font-style: normal; }
    TRANSITION
 ───────────────────────────────────────────── */
 #tx1 { background:var(--navy-dk); padding:130px 0; }
+
+    /* ─── TRANSITION 2 ─── */
+    #tx2 { background:var(--navy-dk); padding:130px 0; }
+
+    /* ─── CONCLUSION ─── */
+    #conclusion { background:var(--navy-dk); padding:160px 0 100px; }
+    .con-intro { max-width:720px; margin-bottom:80px; }
+    .con-body { font-size:1.05rem; font-weight:300; line-height:1.85; color:var(--grey-lt); margin-top:18px; }
+    .tk-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-bottom:80px; }
+    .tk-card {
+      padding:38px 28px;
+      background:rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.07);
+      border-radius:12px; position:relative; overflow:hidden;
+      transition:border-color 0.3s, transform 0.35s;
+    }
+    .tk-card::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg,var(--green),transparent);
+    }
+    .tk-card:hover { border-color:rgba(0,132,61,0.3); transform:translateY(-5px); }
+    .tk-ico {
+      width:46px; height:46px; border-radius:50%;
+      background:rgba(0,132,61,0.1); border:1px solid rgba(0,132,61,0.2);
+      display:flex; align-items:center; justify-content:center; margin-bottom:24px;
+    }
+    .tk-ico svg { width:20px; height:20px; stroke:var(--green); fill:none; stroke-width:1.5; }
+    .tk-card h4 { font-family:'Oswald',sans-serif; font-size:1rem; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:#fff; margin-bottom:12px; }
+    .tk-card p { font-size:0.88rem; line-height:1.72; color:var(--grey); }
 .tx-text {
   font-family:'Oswald',sans-serif;
   font-size:clamp(1.9rem,3.8vw,3rem);
@@ -360,13 +389,13 @@ h2.st em { color: var(--green); font-style: normal; }
 /* ─────────────────────────────────────────────
    VIZ 3
 ───────────────────────────────────────────── */
-#viz3 { background:var(--navy-dk); padding:140px 0; }
+#viz3 { background:var(--navy-md); padding:140px 0; }
 #ch3 { width:100%; display:block; }
 
 /* ─────────────────────────────────────────────
    EP PROFILE
 ───────────────────────────────────────────── */
-#ep-profile { background:var(--navy-md); padding:140px 0; }
+#ep-profile { background:var(--navy-dk); padding:140px 0; }
 .ep-pg { display:grid; grid-template-columns:1fr 1fr; gap:80px; margin-top:56px; }
 .ep-bio { font-size:1.02rem; font-weight:300; line-height:1.88; color:var(--grey-lt); }
 .ep-bio p+p { margin-top:22px; }
@@ -388,7 +417,7 @@ h2.st em { color: var(--green); font-style: normal; }
 /* ─────────────────────────────────────────────
    VIZ 4
 ───────────────────────────────────────────── */
-#viz4 { background:var(--navy-dk); padding:140px 0; }
+#viz4 { background:var(--navy-md); padding:140px 0; }
 #ch4 { width:100%; display:block; }
 
 /* ─────────────────────────────────────────────
@@ -396,7 +425,7 @@ h2.st em { color: var(--green); font-style: normal; }
 ───────────────────────────────────────────── */
 .footer {
   text-align: center;
-  padding: 80px 0 60px;
+  padding: 0 0 60px;
   color: var(--grey-lt);
 }
 .footer .flogo {
