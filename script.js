@@ -350,12 +350,23 @@ function drawV2(TEAM) {
    .text(d => d.s);
 
   // ── IDEAL ZONE (hidden until after guess) ──
-  const izX = x(3.0), izY = y(3.1);
+  // Ideal zone: GF 3.0–3.6 (right = better offence), GA 3.1–3.8 (lower = better defence)
+  // On the chart: x goes right (higher GF), y goes up (lower GA)
+  // So ideal zone = right side (GF > 3.0) and TOP of chart (GA < 3.8 but we show full top area)
+  // The green box spans GF: 3.0→3.6 on x-axis, GA: 3.1→3.8 means y from y(3.8) to y(3.1)
+  const IZ = { gfMin: 3.0, gfMax: 3.6, gaMin: 3.1, gaMax: 3.8 };
+  const izX  = x(IZ.gfMin);
+  const izX2 = x(IZ.gfMax);
+  const izY  = y(IZ.gaMax);   // top of rect (higher ga value = lower on chart)
+  const izY2 = y(IZ.gaMin);   // bottom of rect (lower ga value = higher on chart)
+  const izW  = izX2 - izX;
+  const izH  = izY2 - izY;
+
   const idealZone = g.append('g').attr('class','ideal-zone-g').style('opacity', 0);
   idealZone.append('rect')
-   .attr('x',izX).attr('y',0).attr('width',iw-izX).attr('height',izY)
+   .attr('x', izX).attr('y', izY).attr('width', izW).attr('height', izH)
    .attr('fill','rgba(0,132,61,0.2)').attr('stroke','rgba(0,132,61,0.4)').attr('stroke-width',1).attr('rx',4);
-  idealZone.append('text').attr('x',izX+9).attr('y',14)
+  idealZone.append('text').attr('x', izX + 9).attr('y', izY + 14)
    .style('fill','rgba(0,168,77)').style('font-size','9px').style('font-family','Inter').style('letter-spacing','0.13em')
    .text('IDEAL ZONE');
 
@@ -413,12 +424,21 @@ function drawV2(TEAM) {
       .text('YOUR GUESS')
       .transition().duration(400).style('opacity', 1);
 
-    // Score based on centre of drawn box
-    const centrGF = x.invert(rx + rw / 2);
-    const centrGA = y.invert(ry + rh / 2);
-    const inIdeal = centrGF > 3.0 && centrGA < 3.1;
-    const dist = Math.sqrt(Math.pow(centrGF - 3.2, 2) + Math.pow(centrGA - 2.9, 2));
-    const isClose = dist < 0.5;
+    // Score: check how much the drawn box overlaps the ideal zone
+    // Ideal zone in pixel space:
+    const izPxX  = izX,  izPxY  = izY;
+    const izPxX2 = izX + izW, izPxY2 = izY + izH;
+
+    // Overlap between drawn rect and ideal zone rect
+    const overlapX  = Math.max(0, Math.min(rx + rw, izPxX2) - Math.max(rx, izPxX));
+    const overlapY  = Math.max(0, Math.min(ry + rh, izPxY2) - Math.max(ry, izPxY));
+    const overlapArea = overlapX * overlapY;
+    const idealArea   = izW * izH;
+    const drawnArea   = rw * rh;
+    const overlapFrac = drawnArea > 0 ? overlapArea / Math.min(idealArea, drawnArea) : 0;
+
+    const inIdeal = overlapFrac > 0.4;   // >40% overlap with ideal zone = spot on
+    const isClose = overlapFrac > 0.1;   // any meaningful overlap = close
 
     setTimeout(() => {
       idealZone.transition().duration(700).style('opacity', 1);
