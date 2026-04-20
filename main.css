@@ -391,8 +391,12 @@ h2.st em { color: var(--green); font-style: normal; }
 ───────────────────────────────────────────── */
 #tx1 { background:var(--navy-dk); padding:130px 0; }
 
-    /* ─── TRANSITION 2 ─── */
+/* ─── TRANSITION 2 ─── */
     #tx2 { background:var(--navy-dk); padding:130px 0; }
+    #tx2 .tx2-body { margin-top: 36px; }
+
+    /* ─── TRANSITION 3 ─── */
+    #tx3 { background:var(--navy-dk); padding:130px 0; }
 
     /* ─── CONCLUSION ─── */
     #conclusion { background:var(--navy-md); padding:160px 0 100px; }

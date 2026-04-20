@@ -9,7 +9,7 @@ document.addEventListener("mousemove", (e) => {
 /* ─────────────────────────────────────────────
    NAV DOTS
 ───────────────────────────────────────────── */
-const SEC = ['hero','overview','approach','viz1','tx1','viz2','tx2','viz3','ep-profile','viz4','conclusion'];
+const SEC = ['hero','overview','approach','viz1','tx1','viz2','tx2','viz3','tx3','ep-profile','viz4','conclusion'];
 const dots = document.querySelectorAll('.ndot');
 dots.forEach((d, i) => d.addEventListener('click', () =>
   document.getElementById(SEC[i]).scrollIntoView({ behavior: 'smooth' })
