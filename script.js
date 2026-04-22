@@ -406,35 +406,49 @@ function drawV2(TEAM) {
     const rw = Math.abs(ex - dragStart[0]);
     const rh = Math.abs(ey - dragStart[1]);
 
-    // Finalise the preview rect with a solid style
+// Finalise the preview rect — pending confirmation
     previewRect
       .attr('x', rx).attr('y', ry).attr('width', rw).attr('height', rh)
       .attr('fill', 'rgba(255,200,0,0.12)')
       .attr('stroke', 'rgba(255,200,0,0.9)');
 
-    g.append('text')
+    const guessLabel = g.append('text')
       .attr('x', rx + rw / 2).attr('y', ry - 8)
       .style('text-anchor','middle').style('fill','rgba(255,200,0,0.9)')
       .style('font-size','9px').style('font-family','Inter').style('letter-spacing','0.12em')
       .style('opacity', 0)
-      .text('YOUR GUESS')
-      .transition().duration(400).style('opacity', 1);
+      .text('YOUR GUESS');
+    guessLabel.transition().duration(400).style('opacity', 1);
 
-    // Score: check how much the drawn box overlaps the ideal zone
-    // Ideal zone in pixel space:
-    const izPxX  = izX,  izPxY  = izY;
-    const izPxX2 = izX + izW, izPxY2 = izY + izH;
+    // Show confirm/redo buttons
+    const confirmBar = document.getElementById('guessConfirmBar');
+    confirmBar.style.display = 'flex';
 
-    // Overlap between drawn rect and ideal zone rect
-    const overlapX  = Math.max(0, Math.min(rx + rw, izPxX2) - Math.max(rx, izPxX));
-    const overlapY  = Math.max(0, Math.min(ry + rh, izPxY2) - Math.max(ry, izPxY));
+    // Store pending guess data for confirm
+    window._pendingGuess = { rx, ry, rw, rh };
+
+    dragStart = null;
+    guessed = false; // allow redo until confirmed
+  });
+
+  // ── CONFIRM / REDO BUTTONS ──
+  document.getElementById('confirmGuessBtn').onclick = function() {
+    if (!window._pendingGuess) return;
+    guessed = true;
+    chartBox.classList.add('guessed');
+    document.getElementById('guessOverlay').classList.add('hidden');
+    document.getElementById('guessConfirmBar').style.display = 'none';
+
+    const { rx, ry, rw, rh } = window._pendingGuess;
+
+    const overlapX    = Math.max(0, Math.min(rx + rw, izX + izW) - Math.max(rx, izX));
+    const overlapY    = Math.max(0, Math.min(ry + rh, izY + izH) - Math.max(ry, izY));
     const overlapArea = overlapX * overlapY;
-    const idealArea   = izW * izH;
     const drawnArea   = rw * rh;
-    const overlapFrac = drawnArea > 0 ? overlapArea / Math.min(idealArea, drawnArea) : 0;
+    const overlapFrac = drawnArea > 0 ? overlapArea / Math.min(izW * izH, drawnArea) : 0;
 
-    const inIdeal = overlapFrac > 0.4;   // >40% overlap with ideal zone = spot on
-    const isClose = overlapFrac > 0.1;   // any meaningful overlap = close
+    const inIdeal = overlapFrac > 0.4;
+    const isClose = overlapFrac > 0.1;
 
     setTimeout(() => {
       idealZone.transition().duration(700).style('opacity', 1);
@@ -446,26 +460,38 @@ function drawV2(TEAM) {
 
       if (inIdeal) {
         resultEl.classList.add('close');
-        iconEl.textContent  = '✓';
+        iconEl.textContent = '✓';
         titleEl.textContent = 'Spot on!';
-        bodyEl.innerHTML    = 'You placed your guess inside the ideal zone: <strong>High scoring, low goals against</strong>. That\'s exactly where the 2023–24 Canucks landed, and why it was their only playoff season.';
+        bodyEl.innerHTML = 'You placed your guess inside the ideal zone — <strong>high scoring, low goals against</strong>. That\'s exactly where the 2023–24 Canucks landed, and why it was their only playoff season.';
       } else if (isClose) {
         resultEl.classList.add('close');
-        iconEl.textContent  = '◎';
+        iconEl.textContent = '◎';
         titleEl.textContent = 'Close!';
-        bodyEl.innerHTML    = 'You were close. The ideal zone sits in the <strong>bottom-right corner</strong>: High goals for, low goals against. Only 2023–24 reached it across five seasons.';
+        bodyEl.innerHTML = 'You were close. The ideal zone sits in the <strong>bottom-right corner</strong> — high goals for, low goals against. Only 2023–24 reached it across five seasons.';
       } else {
         resultEl.classList.add('far');
-        iconEl.textContent  = '✗';
+        iconEl.textContent = '✗';
         titleEl.textContent = 'Not quite —';
-        bodyEl.innerHTML    = 'The ideal zone is the <strong>bottom-right corner</strong>: scoring lots while conceding little. It\'s rare, the Canucks only managed it once in five seasons, in 2023–24.';
+        bodyEl.innerHTML = 'The ideal zone is the <strong>bottom-right corner</strong>: scoring lots while conceding little. It\'s rare — the Canucks only managed it once in five seasons, in 2023–24.';
       }
 
       resultEl.style.display = 'block';
     }, 500);
+  };
 
+  document.getElementById('redoGuessBtn').onclick = function() {
+    // Clear preview rect and label, reset for new drag
+    previewRect.style('opacity', 0)
+      .attr('x', 0).attr('y', 0).attr('width', 0).attr('height', 0);
+    g.selectAll('text').filter(function() {
+      return d3.select(this).text() === 'YOUR GUESS';
+    }).remove();
+    document.getElementById('guessConfirmBar').style.display = 'none';
+    document.getElementById('guessOverlay').classList.remove('hidden');
+    window._pendingGuess = null;
+    guessed = false;
     dragStart = null;
-  });
+  };
 }
 
 /* ═══════════════════════════════════════
