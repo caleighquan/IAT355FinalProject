@@ -402,27 +402,39 @@ h2.st em { color: var(--green); font-style: normal; }
     #conclusion { background:var(--navy-dk); padding:160px 0 100px; }
     .con-intro { max-width:720px; margin-bottom:80px; }
     .con-body { font-size:1.05rem; font-weight:300; line-height:1.85; color:var(--grey-lt); margin-top:18px; }
-    .tk-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-bottom:80px; }
-    .tk-card {
-      padding:38px 28px;
-      background:rgba(255,255,255,0.02);
-      border:1px solid rgba(255,255,255,0.07);
-      border-radius:12px; position:relative; overflow:hidden;
-      transition:border-color 0.3s, transform 0.35s;
+    .tk-stack { display:flex; flex-direction:column; margin-bottom:80px; }
+    .tk-row {
+      display:flex; gap:32px; align-items:flex-start;
     }
-    .tk-card::before {
-      content:''; position:absolute; top:0; left:0; right:0; height:2px;
-      background:linear-gradient(90deg,var(--green),transparent);
+    .tk-row-left {
+      display:flex; flex-direction:column; align-items:center;
+      flex-shrink:0;
     }
-    .tk-card:hover { border-color:rgba(0,132,61,0.3); transform:translateY(-5px); }
     .tk-ico {
       width:46px; height:46px; border-radius:50%;
       background:rgba(0,132,61,0.1); border:1px solid rgba(0,132,61,0.2);
-      display:flex; align-items:center; justify-content:center; margin-bottom:24px;
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0;
     }
     .tk-ico svg { width:20px; height:20px; stroke:var(--green); fill:none; stroke-width:1.5; }
-    .tk-card h4 { font-family:'Oswald',sans-serif; font-size:1rem; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:#fff; margin-bottom:12px; }
-    .tk-card p { font-size:0.88rem; line-height:1.72; color:var(--grey); }
+    .tk-connector {
+      width:1px; flex:1; min-height:40px;
+      background:linear-gradient(to bottom, rgba(0,132,61,0.3), rgba(0,132,61,0.05));
+      margin:8px 0;
+    }
+    .tk-connector--last { background: transparent; }
+    .tk-row-body {
+      padding:4px 0 48px;
+      border-bottom:1px solid rgba(255,255,255,0.05);
+      flex:1;
+    }
+    .tk-row:last-child .tk-row-body { border-bottom:none; padding-bottom:0; }
+    .tk-row-num {
+      font-family:'Oswald',sans-serif; font-size:0.68rem; font-weight:700;
+      letter-spacing:0.18em; color:var(--green); margin-bottom:8px;
+    }
+    .tk-row-body h4 { font-family:'Oswald',sans-serif; font-size:1.1rem; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:#fff; margin-bottom:10px; }
+    .tk-row-body p { font-size:0.95rem; line-height:1.78; color:var(--grey-lt); max-width:680px; }
 .tx-text {
   font-family:'Oswald',sans-serif;
   font-size:clamp(1.9rem,3.8vw,3rem);
