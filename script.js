@@ -349,16 +349,12 @@ function drawV2(TEAM) {
    .style('font-size','10px').style('font-family','Inter').style('font-weight','500')
    .text(d => d.s);
 
-  // ── IDEAL ZONE (hidden until after guess) ──
-  // Ideal zone: GF 3.0–3.6 (right = better offence), GA 3.1–3.8 (lower = better defence)
-  // On the chart: x goes right (higher GF), y goes up (lower GA)
-  // So ideal zone = right side (GF > 3.0) and TOP of chart (GA < 3.8 but we show full top area)
-  // The green box spans GF: 3.0→3.6 on x-axis, GA: 3.1→3.8 means y from y(3.8) to y(3.1)
-  const IZ = { gfMin: 3.0, gfMax: 3.6, gaMin: 3.1, gaMax: 3.8 };
+// Ideal zone: HIGH goals for (right) + LOW goals against (bottom = better defence)
+  const IZ = { gfMin: 3.2, gfMax: 3.6, gaMin: 2.55, gaMax: 2.95 };
   const izX  = x(IZ.gfMin);
   const izX2 = x(IZ.gfMax);
-  const izY  = y(IZ.gaMax);   // top of rect (higher ga value = lower on chart)
-  const izY2 = y(IZ.gaMin);   // bottom of rect (lower ga value = higher on chart)
+  const izY  = y(IZ.gaMax);   // top edge of rect (ga=2.95 on chart)
+  const izY2 = y(IZ.gaMin);   // bottom edge of rect (ga=2.55, bottom of chart)
   const izW  = izX2 - izX;
   const izH  = izY2 - izY;
 
@@ -452,17 +448,17 @@ function drawV2(TEAM) {
         resultEl.classList.add('close');
         iconEl.textContent  = '✓';
         titleEl.textContent = 'Spot on!';
-        bodyEl.innerHTML    = 'You placed your guess inside the ideal zone — <strong>high scoring, low goals against</strong>. That\'s exactly where the 2023–24 Canucks landed, and why it was their only playoff season.';
+        bodyEl.innerHTML    = 'You placed your guess inside the ideal zone: <strong>High scoring, low goals against</strong>. That\'s exactly where the 2023–24 Canucks landed, and why it was their only playoff season.';
       } else if (isClose) {
         resultEl.classList.add('close');
         iconEl.textContent  = '◎';
         titleEl.textContent = 'Close!';
-        bodyEl.innerHTML    = 'You were close. The ideal zone sits in the <strong>top-right corner</strong> — high goals for, low goals against. Only 2023–24 reached it across five seasons.';
+        bodyEl.innerHTML    = 'You were close. The ideal zone sits in the <strong>bottom-right corner</strong>: High goals for, low goals against. Only 2023–24 reached it across five seasons.';
       } else {
         resultEl.classList.add('far');
         iconEl.textContent  = '✗';
         titleEl.textContent = 'Not quite —';
-        bodyEl.innerHTML    = 'The ideal zone is the <strong>top-right corner</strong>: scoring lots while conceding little. It\'s rare — the Canucks only managed it once in five seasons, in 2023–24.';
+        bodyEl.innerHTML    = 'The ideal zone is the <strong>bottom-right corner</strong>: scoring lots while conceding little. It\'s rare, the Canucks only managed it once in five seasons, in 2023–24.';
       }
 
       resultEl.style.display = 'block';
