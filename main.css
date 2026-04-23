@@ -51,9 +51,6 @@ body {
   cursor: pointer !important;
 }
 
-#chartBox2:not(.guessed) { cursor: crosshair !important; }
-#chartBox2.guessed { cursor: default !important; }
-
 /* NAVIGATION & PROGRESS DOTS */
 .ndots {
   position: fixed; right: 28px; top: 50%;
@@ -506,6 +503,10 @@ h2.st em { color: var(--green); font-style: normal; }
   cursor: pointer; transition: all 0.2s;
 }
 .guess-redo-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+
+#chartBox2:not(.guessed),
+#chartBox2:not(.guessed) * { cursor: crosshair !important; }
+#chartBox2.guessed { cursor: default !important; }
 
 .guess-result {
   margin-bottom: 28px;
