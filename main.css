@@ -1,6 +1,4 @@
-/* ─────────────────────────────────────────────
-   TOKENS & RESET
-───────────────────────────────────────────── */
+/* COLOUR */
 :root {
   --navy:       #00205B;
   --navy-dk:    #000D24;
@@ -24,18 +22,18 @@ body {
 }
 ::selection { background: var(--green); color: #fff; }
 
+/* CANUCKS CURSOR */
 .fake-cursor {
   position: fixed;
-  width: 40px;   /* 🔥 change size here */
+  width: 40px;   
   height: 40px;
-  pointer-events: none; /* important */
+  pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
 }
 
-/* ─────────────────────────────────────────────
-   NAV DOTS
-───────────────────────────────────────────── */
+
+/* NAVIGATION & PROGRESS DOTS */
 .ndots {
   position: fixed; right: 28px; top: 50%;
   transform: translateY(-50%);
@@ -70,9 +68,8 @@ body {
   box-shadow: 0 0 14px rgba(0,168,77,0.55);
 }
 
-/* ─────────────────────────────────────────────
-   TOOLTIP
-───────────────────────────────────────────── */
+
+/* TOOLTIP */
 #tip {
   position: fixed;
   background: rgba(0,8,22,0.97);
@@ -86,9 +83,7 @@ body {
 #tip .tr { display: flex; justify-content: space-between; gap: 20px; font-size: 0.78rem; color: var(--grey-lt); margin-bottom: 3px; }
 #tip .tv { color: #fff; font-weight: 500; }
 
-/* ─────────────────────────────────────────────
-   SCROLL-REVEAL
-───────────────────────────────────────────── */
+/* SCROLL-REVEAL */
 .rv {
   opacity: 0;
   transform: translateY(36px);
@@ -104,9 +99,7 @@ body {
 .d4 { transition-delay: 0.44s; }
 .d5 { transition-delay: 0.57s; }
 
-/* ─────────────────────────────────────────────
-   SHARED LAYOUT
-───────────────────────────────────────────── */
+/* SHARED LAYOUT */
 .wrap { max-width: 1180px; margin: 0 auto; padding: 0 56px; }
 section { position: relative; overflow: hidden; }
 
@@ -130,9 +123,8 @@ h2.st {
 h2.st em { color: var(--green); font-style: normal; }
 .lead { font-size: 1.04rem; font-weight: 300; line-height: 1.82; color: var(--grey-lt); max-width: 660px; }
 
-/* ─────────────────────────────────────────────
-   HERO
-───────────────────────────────────────────── */
+
+/* HERO SECTION */
 #hero {
   min-height: 100vh;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -141,6 +133,7 @@ h2.st em { color: var(--green); font-style: normal; }
 }
 .hero-bg { position: absolute; inset: 0; overflow: hidden; }
 
+/* GRADIENT BLOBS */
 .blob {
   position: absolute; border-radius: 50%;
   filter: blur(90px); will-change: transform;
@@ -201,9 +194,7 @@ h2.st em { color: var(--green); font-style: normal; }
 .scroll-cue span { font-size:0.6rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--grey); }
 .scroll-line { width:1px; height:44px; background:linear-gradient(to bottom,var(--grey),transparent); }
 
-/* ─────────────────────────────────────────────
-   OVERVIEW
-───────────────────────────────────────────── */
+/* OVERVIEW */
 #overview { background:var(--navy-md); padding:140px 0 120px; }
 .ov-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; margin-top:56px; }
 .ov-body p { font-size:1.02rem; font-weight:300; line-height:1.85; color:var(--grey-lt); }
@@ -229,14 +220,10 @@ h2.st em { color: var(--green); font-style: normal; }
 .s-tag.m { background:rgba(255,255,255,0.04); color:var(--grey); border:1px solid rgba(255,255,255,0.08); }
 .s-tag.l { background:rgba(180,30,30,0.12); color:#e07070; border:1px solid rgba(180,30,30,0.25); }
 
-/* ─────────────────────────────────────────────
-   APPROACH
-───────────────────────────────────────────── */
+/* APPROACH */
 #approach { background:var(--navy-dk); padding:120px 0; }
 
-/* ─────────────────────────────────────────────
-   VIZ SHARED
-───────────────────────────────────────────── */
+/* VIZ SHARED */
 .viz-hd { max-width:700px; margin-bottom:52px; }
 .chart-box {
   background:rgba(255,255,255,0.05);
@@ -269,15 +256,11 @@ h2.st em { color: var(--green); font-style: normal; }
 .grid line { stroke:rgba(255,255,255,0.2); stroke-dasharray:3,3; }
 .grid path { stroke:none; }
 
-/* ─────────────────────────────────────────────
-   VIZ 1
-───────────────────────────────────────────── */
+/* VIZ 1 */
 #viz1 { background:var(--navy-md); padding:140px 0; }
 #ch1 { width:100%; display:block; }
 
-/* ─────────────────────────────────────────────
-   QUIZ
-───────────────────────────────────────────── */
+/* VIZ 1 QUIZ TOP SCORER */
 .quiz-wrap {
   max-width: 700px;
   margin: 0 0 52px;
@@ -386,9 +369,7 @@ h2.st em { color: var(--green); font-style: normal; }
 }
 .quiz-reveal-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
 
-/* ─────────────────────────────────────────────
-   TRANSITION
-───────────────────────────────────────────── */
+/* TRANSITION 1 */
 #tx1 { background:var(--navy-dk); padding:130px 0; }
 
 /* ─── TRANSITION 2 ─── */
@@ -450,9 +431,7 @@ h2.st em { color: var(--green); font-style: normal; }
 #viz2 { background:var(--navy-md); padding:140px 0; }
 #ch2 { width:100%; display:block; }
 
-/* ─────────────────────────────────────────────
-   VIZ 2 GUESS INTERACTION
-───────────────────────────────────────────── */
+/* VIZ 2 GUESS IDEAL ZONE */
 .guess-prompt {
   text-align: center;
   padding: 36px 44px;
@@ -540,9 +519,7 @@ h2.st em { color: var(--green); font-style: normal; }
   to   { opacity: 1; transform: none; }
 }
 
-/* ─────────────────────────────────────────────
-      EP INTRO
-───────────────────────────────────────────── */
+/* ELIAS PETTERSON (EP) INTRO */
     #ep-intro {
       min-height:100vh; display:flex; align-items:center;
       background:var(--navy-md); padding:0; position:relative; overflow:hidden;
@@ -595,22 +572,18 @@ h2.st em { color: var(--green); font-style: normal; }
     .ep-sn { font-family:'Oswald',sans-serif; font-size:2.6rem; font-weight:700; line-height:1; color:#fff; }
     .ep-sl { font-size:0.66rem; font-weight:400; letter-spacing:0.12em; text-transform:uppercase; color:var(--grey); margin-top:7px; line-height:1.45; }
 
-/* ─────────────────────────────────────────────
-   VIZ 3
-───────────────────────────────────────────── */
+/* VIZ 3 SECTION */
 #viz3 { background:var(--navy-md); padding:140px 0; }
 #ch3 { width:100%; display:block; }
 
-/* ─────────────────────────────────────────────
-   EP PROFILE
-───────────────────────────────────────────── */
+/* EP PROFILE */
 #ep-profile { background:var(--navy-dk); padding:140px 0; }
 .ep-pg { display:grid; grid-template-columns:1fr 1fr; gap:80px; margin-top:56px; }
 .ep-bio { font-size:1.02rem; font-weight:300; line-height:1.88; color:var(--grey-lt); }
 .ep-bio p+p { margin-top:22px; }
 .ep-bio strong { color:#fff; font-weight:500; }
 
-/* Timeline */
+/* TIMELINE */
 .ep-tl { display:flex; flex-direction:column; }
 .ep-tl-item { display:flex; gap:20px; position:relative; padding-bottom:32px; }
 .ep-tl-item:last-child { padding-bottom:0; }
@@ -623,15 +596,11 @@ h2.st em { color: var(--green); font-style: normal; }
 .ep-tl-h { font-family:'Oswald',sans-serif; font-size:0.95rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:#fff; margin-bottom:4px; }
 .ep-tl-d { font-size:0.85rem; color:var(--grey-lt); line-height:1.5; }
 
-/* ─────────────────────────────────────────────
-   VIZ 4
-───────────────────────────────────────────── */
+/* VIZ 4 SECTION */
 #viz4 { background:var(--navy-md); padding:140px 0; }
 #ch4 { width:100%; display:block; }
 
-/* ─────────────────────────────────────────────
-   FOOTER
-───────────────────────────────────────────── */
+/* FOOTER */
 .footer {
   text-align: center;
   padding: 0 0 60px;
@@ -644,9 +613,7 @@ h2.st em { color: var(--green); font-style: normal; }
 .footer .flogo span { color: var(--green); }
 .footer .fnote { font-size: 0.78rem; margin-top: 8px; display: block; color: var(--grey); }
 
-/* ─────────────────────────────────────────────
-   RESPONSIVE
-───────────────────────────────────────────── */
+/* MEDIA WEBSITE RESPONSIVENESS */
 @media(max-width:960px) {
   .wrap{padding:0 28px} .ov-grid,.ep-pg{grid-template-columns:1fr;gap:48px}
   .ap-grid{grid-template-columns:1fr 1fr} .ins-grid{grid-template-columns:1fr}
