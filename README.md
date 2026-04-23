@@ -10,8 +10,6 @@ https://moneypuck.com/data.htm
 
 // Custom Cursor: https://sweezy-cursors.com/cursor/vancouver-canucks-stick-animated/ 
 
-
-
 ------------------------------------------------------------------------------------------------------------------------------
 
 HOW TO USE THE WEBSITE:
@@ -25,8 +23,6 @@ Interactive Elements:
 Quiz (Visualisation 01): Before the top scorers chart is revealed, you are asked to guess who the Canucks 
 top goal scorer is over five seasons. Select a player card and click "Reveal the answer" to see if you were 
 right. The full bar chart appears after you submit.
-
-// Tooltips: Hovering over any data point across all four charts reveals a tooltip with the exact values for that point.
 
 Ideal Zone Guess (Visualisation 02): Click and drag a box anywhere on the scatterplot to place your guess 
 for where the "ideal zone" of team performance sits. After drawing your box, click "Confirm guess" to see 
