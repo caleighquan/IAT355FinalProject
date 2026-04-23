@@ -1,4 +1,5 @@
 // CURSOR FOLLOWS MOUSE
+// learned from https://medium.com/@benzbraunstein/using-javascript-and-css-to-make-custom-cursors-dd75d40520
 const cursor = document.querySelector(".fake-cursor");
 
 document.addEventListener("mousemove", (e) => {

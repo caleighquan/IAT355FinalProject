@@ -8,7 +8,8 @@ Google Fonts – Oswald: Vernon Adams et al. (2011). Oswald [Typeface]. Google F
 Datasets 
 https://moneypuck.com/data.htm
 
-// Custom Cursor: https://sweezy-cursors.com/cursor/vancouver-canucks-stick-animated/ 
+Custom canucks: https://sweezy-cursors.com/cursor/vancouver-canucks-stick-animated/ 
+Implementing cursor: https://medium.com/@benzbraunstein/using-javascript-and-css-to-make-custom-cursors-dd75d40520
 
 ------------------------------------------------------------------------------------------------------------------------------
 
