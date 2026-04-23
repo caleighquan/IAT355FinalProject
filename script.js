@@ -91,15 +91,13 @@ function revealChart() {
   if (window._TOP15) drawV1(window._TOP15);
 }
 
-/* ═══════════════════════════════════════════════════════════
-   LOAD BOTH FULL DATASETS, DERIVE AND DRAW
-═══════════════════════════════════════════════════════════ */
+//  LOAD BOTH FULL DATASETS, DERIVE AND DRAW
 Promise.all([
   d3.csv("canucks_player_stats_2021_2026_combined.csv"),
   d3.csv("canucks_team_stats_2021_2026.csv")
 ]).then(([players, teams]) => {
 
-  /* ── Coerce player types ─────────────────────────────── */
+// Coerce player types
   players.forEach(d => {
     d.Goals   = +d.goals;
     d.Assists = +d.assists;
@@ -109,7 +107,7 @@ Promise.all([
     d.Season  = normSeason(d.season);
   });
 
-  /* ── Coerce team types ───────────────────────────────── */
+// Coerce team types
   teams.forEach(d => {
     d.Points       = +d.PTS;
     d.GoalsFor     = +d.GF;
@@ -123,7 +121,7 @@ Promise.all([
 
   const csvSeasons = [...new Set(teams.map(d => d.Season))].sort();
 
-  /* ── VIZ 1: Top 15 players by total goals ────────────── */
+// VIZ 1: Top 15 players by total goals
   const goalsByPlayer = d3.rollup(players, v => d3.sum(v, d => d.Goals), d => d.Player);
   const TOP15 = Array.from(goalsByPlayer, ([name, goals]) => ({ name, goals }))
     .sort((a, b) => b.goals - a.goals).slice(0, 15);
@@ -131,7 +129,7 @@ Promise.all([
   // Store globally so revealChart() can access it
   window._TOP15 = TOP15;
 
-  /* ── VIZ 2: GF/GA per game per season ───────────────── */
+// VIZ 2: GF/GA per game per season
   const TEAM = teams.map(d => ({
     s:   d.Season,
     pts: d.Points,
@@ -140,7 +138,7 @@ Promise.all([
     po:  d.Playoffs
   })).sort((a, b) => csvSeasons.indexOf(a.s) - csvSeasons.indexOf(b.s));
 
-  /* ── VIZ 3 (Visualisation 03): PP% and PK% per season ── */
+// VIZ 3 (Visualisation 03): PP% and PK% per season 
   const SPECIAL = teams.map(d => ({
     s:  d.Season,
     pp: d.PPpct,
@@ -148,7 +146,7 @@ Promise.all([
     po: d.Playoffs
   })).sort((a, b) => csvSeasons.indexOf(a.s) - csvSeasons.indexOf(b.s));
 
-  /* ── VIZ 4 (Visualisation 04): EP points vs team standings points ── */
+// VIZ 4 (Visualisation 04): EP points vs team standings points 
   const epRows = players.filter(d => d.Player && d.Player.includes('Pettersson'));
   const epBySeason = d3.rollup(epRows, v => d3.sum(v, d => d.Points), d => d.Season);
   const EP = csvSeasons.map(s => {
@@ -156,10 +154,10 @@ Promise.all([
     return { s, ep: epBySeason.get(s) || 0, tp: teamRow ? teamRow.Points : 0 };
   });
 
-  /* ── Season overview bars ────────────────────────────── */
+// Season overview bars 
   buildOverviewBars(TEAM);
 
-  /* ── Wire up intersection-triggered chart draws ──────── */
+// Wire up intersection-triggered chart draws
   const drawn = {};
   const cObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
@@ -182,9 +180,7 @@ Promise.all([
   );
 });
 
-/* ═══════════════════════════════════════
-   SEASON OVERVIEW BARS  (built from team CSV)
-═══════════════════════════════════════ */
+  //  SEASON OVERVIEW BAR CHART
 function buildOverviewBars(TEAM) {
   const maxPts = 130; // scale denominator
   const container = document.getElementById('sbars');
@@ -211,9 +207,7 @@ function buildOverviewBars(TEAM) {
   container.innerHTML = html;
 }
 
-/* ═══════════════════════════════════════
-   VIZ 1 - TOP 15 PLAYERS BAR CHART
-═══════════════════════════════════════ */
+// VIZ 1 - TOP 15 PLAYERS BAR CHART
 function drawV1(TOP15) {
   const box = document.querySelector('#viz1 .chart-box');
   if (!box) return;
@@ -283,9 +277,7 @@ function drawV1(TOP15) {
     .text(d => d.goals);
 }
 
-/* ═══════════════════════════════════════
-   VIZ 2 - SCATTERPLOT
-═══════════════════════════════════════ */
+// VIZ 2 - SCATTERPLOT
 function drawV2(TEAM) {
   const box = document.querySelector('#viz2 .chart-box');
   const W = box.clientWidth - 88, H = 460;
@@ -366,7 +358,7 @@ function drawV2(TEAM) {
    .style('fill','rgba(0,168,77)').style('font-size','9px').style('font-family','Inter').style('letter-spacing','0.13em')
    .text('IDEAL ZONE');
 
-// ── GUESS DRAG HANDLER ──
+// GUESS DRAG HANDLER 
   let guessed = false;
   let dragStart = null;
   const chartBox = document.getElementById('chartBox2');
@@ -431,7 +423,7 @@ function drawV2(TEAM) {
     guessed = false; // allow redo until confirmed
   });
 
-  // ── CONFIRM / REDO BUTTONS ──
+  // CONFIRM / REDO BUTTONS
   document.getElementById('confirmGuessBtn').onclick = function() {
     if (!window._pendingGuess) return;
     guessed = true;
@@ -494,9 +486,7 @@ function drawV2(TEAM) {
   };
 }
 
-/* ═══════════════════════════════════════
-   VIZ 3 (Visualisation 03) - POWER PLAY & PENALTY KILL
-═══════════════════════════════════════ */
+// VIZ 3 (Visualisation 03) - POWER PLAY & PENALTY KILL
 function drawV3(SPECIAL, seasons) {
   const box = document.querySelector('#viz3 .chart-box');
   const W = box.clientWidth - 88, H = 380;
@@ -515,10 +505,10 @@ function drawV3(SPECIAL, seasons) {
   const xS = d3.scalePoint().domain(seasons).range([0, iw]).padding(0.28);
   const y  = d3.scaleLinear().domain([yMin, yMax]).range([ih, 0]);
 
-  /* Grid lines */
+  // Grid lines
   g.append('g').attr('class','grid').call(d3.axisLeft(y).tickSize(-iw).tickFormat('').ticks(6));
 
-  /* Playoff season highlight */
+  // Playoff season highlight
   const poSeason = SPECIAL.find(d => d.po);
   if (poSeason) {
     const px = xS(poSeason.s), bw = xS.step();
@@ -533,29 +523,29 @@ function drawV3(SPECIAL, seasons) {
      .text('PLAYOFFS');
   }
 
-  /* Axes */
+  // Axes
   g.append('g').attr('class','axis').attr('transform','translate(0,' + ih + ')')
    .call(d3.axisBottom(xS).tickSize(0).tickPadding(12));
   g.append('g').attr('class','axis')
    .call(d3.axisLeft(y).ticks(6).tickSize(0).tickPadding(8)
      .tickFormat(d => d + '%'));
 
-  /* Y axis label */
+  // Y axis label
   g.append('text').attr('transform','rotate(-90)').attr('x',-ih/2).attr('y',-50)
    .style('text-anchor','middle').style('fill','rgba(122,143,173,0.7)')
    .style('font-size','10px').style('font-family','Inter').text('Percentage (%)');
 
-  /* PP% line */
+  // PP% line
   const lPP = d3.line().x(d => xS(d.s)).y(d => y(d.pp)).curve(d3.curveCatmullRom);
   g.append('path').datum(SPECIAL).attr('fill','none')
    .attr('stroke','var(--green)').attr('stroke-width',2.5).attr('d',lPP);
 
-  /* PK% line */
+  // PK% line
   const lPK = d3.line().x(d => xS(d.s)).y(d => y(d.pk)).curve(d3.curveCatmullRom);
   g.append('path').datum(SPECIAL).attr('fill','none')
    .attr('stroke','rgba(255,180,0,0.75)').attr('stroke-width',2.5).attr('d',lPK);
 
-  /* PP% dots */
+  // PP% dots
   g.selectAll('.ppd').data(SPECIAL).enter().append('circle').attr('class','ppd')
    .attr('cx', d => xS(d.s)).attr('cy', d => y(d.pp)).attr('r', 6)
    .attr('fill','var(--green)').attr('stroke','var(--navy-dk)').attr('stroke-width',2)
@@ -572,14 +562,14 @@ function drawV3(SPECIAL, seasons) {
    .on('mousemove', ev => moveTip(ev.clientX, ev.clientY))
    .on('mouseout', function() { d3.select(this).attr('r', 6); hideTip(); });
 
-  /* PP% labels */
+  // PP% labels
   g.selectAll('.ppl').data(SPECIAL).enter().append('text').attr('class','ppl')
    .attr('x', d => xS(d.s)).attr('y', d => y(d.pp) - 12)
    .style('text-anchor','middle').style('fill','#00D45A')
    .style('font-size','10px').style('font-family','Inter').style('font-weight','600')
    .text(d => d.pp.toFixed(1) + '%');
 
-  /* PK% dots */
+  // PK% dots
   g.selectAll('.pkd').data(SPECIAL).enter().append('circle').attr('class','pkd')
    .attr('cx', d => xS(d.s)).attr('cy', d => y(d.pk)).attr('r', 6)
    .attr('fill','rgba(255,180,0,0.75)').attr('stroke','var(--navy-dk)').attr('stroke-width',2)
@@ -596,22 +586,20 @@ function drawV3(SPECIAL, seasons) {
    .on('mousemove', ev => moveTip(ev.clientX, ev.clientY))
    .on('mouseout', function() { d3.select(this).attr('r', 6); hideTip(); });
 
-  /* PK% labels */
+  // PK% labels
   g.selectAll('.pkl').data(SPECIAL).enter().append('text').attr('class','pkl')
    .attr('x', d => xS(d.s)).attr('y', d => y(d.pk) + 22)
    .style('text-anchor','middle').style('fill','rgba(255,180,0,0.85)')
    .style('font-size','10px').style('font-family','Inter').style('font-weight','600')
    .text(d => d.pk.toFixed(1) + '%');
 
-  /* Legend */
+  // Legend
   document.getElementById('leg3').innerHTML =
     '<div class="cli"><div class="clc" style="background:var(--green)"></div><span class="cll">Power Play %</span></div>' +
     '<div class="cli"><div class="clc" style="background:rgba(255,180,0,0.75)"></div><span class="cll">Penalty Kill %</span></div>';
 }
 
-/* ═══════════════════════════════════════
-   VIZ 4 (Visualisation 04) - DUAL LINE (EP vs TEAM)
-═══════════════════════════════════════ */
+  //  VIZ 4 (Visualisation 04) - DUAL LINE (EP vs TEAM)
 function drawV4(EP, seasons) {
   const box = document.querySelector('#viz4 .chart-box');
   const W = box.clientWidth - 88, H = 380;
