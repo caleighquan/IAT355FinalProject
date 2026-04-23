@@ -363,6 +363,7 @@ function drawV2(TEAM) {
    .text('IDEAL ZONE');
 
 // GUESS DRAG HANDLER: Handles user drag interaction for guessing the "ideal performance zone"
+// Used dragging logic: https://d3js.org/d3-drag
   let guessed = false;
   let dragStart = null;
   const chartBox = document.getElementById('chartBox2');
