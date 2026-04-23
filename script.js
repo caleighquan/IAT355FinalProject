@@ -26,6 +26,7 @@ SEC.forEach(id => { const el = document.getElementById(id); if (el) secObs.obser
 
 
 // SCROLL REVEAL 
+// inspired by https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
 const rvObs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
 }, { threshold: 0.12 });
@@ -43,6 +44,8 @@ const normSeason = s => s.replace(/-/g, '\u2013').trim();
 
 
 // Handles selecting the quiz options (highlight + enable submit)
+// Inspired by basic JS quiz app structure
+// https://dev.to/linusmwiti21/level-up-your-skills-build-a-web-quiz-app-with-basic-js-html-css-lm5
 let selectedIdx = null;
 const CORRECT_IDX = 0; // Elias Pettersson
 

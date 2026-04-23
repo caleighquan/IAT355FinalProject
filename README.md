@@ -11,6 +11,10 @@ https://moneypuck.com/data.htm
 Custom canucks: https://sweezy-cursors.com/cursor/vancouver-canucks-stick-animated/ 
 Implementing cursor: https://medium.com/@benzbraunstein/using-javascript-and-css-to-make-custom-cursors-dd75d40520
 
+Basic JS quiz structure: https://dev.to/linusmwiti21/level-up-your-skills-build-a-web-quiz-app-with-basic-js-html-css-lm5
+
+Scrolling/reveal animation: https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API 
+
 ------------------------------------------------------------------------------------------------------------------------------
 
 HOW TO USE THE WEBSITE:
