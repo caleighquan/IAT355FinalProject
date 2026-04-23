@@ -555,9 +555,6 @@ h2.st em { color: var(--green); font-style: normal; }
   color: #fff; margin-bottom: 10px;
 }
 .guess-prompt-q em { color: var(--green); font-style: normal; }
-.guess-prompt-hint {
-  font-size: 0.9rem; color: var(--grey-lt); line-height: 1.6;
-}
 
 .guess-overlay {
   position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
