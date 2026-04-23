@@ -239,7 +239,7 @@ function drawV1(TOP15) {
    .call(d3.axisLeft(y).ticks(6).tickSize(0).tickPadding(9));
 
   g.append('text').attr('transform','rotate(-90)').attr('y',-m.left+2).attr('x',-ih/2).attr('dy','1em')
-   .style('text-anchor','middle').style('fill','rgba(122,143,173,0.55)')
+   .style('text-anchor','middle').style('fill','var(--grey-lt)')
    .style('font-size','10px').style('font-family','Inter').text('Total Goals');
 
   g.selectAll('.bar')
@@ -299,10 +299,10 @@ function drawV2(TEAM) {
   g.append('g').attr('class','axis').call(d3.axisLeft(y).ticks(5).tickSize(0).tickPadding(10));
 
   g.append('text').attr('x',iw/2).attr('y',ih+54).style('text-anchor','middle')
-   .style('fill','rgba(122,143,173,0.7)').style('font-size','11px').style('font-family','Inter')
+   .style('fill','var(--grey-lt)').style('font-size','11px').style('font-family','Inter')
    .text('Goals For Per Game  \u2192  (higher = better offence)');
   g.append('text').attr('transform','rotate(-90)').attr('x',-ih/2).attr('y',-54).style('text-anchor','middle')
-   .style('fill','rgba(122,143,173,0.7)').style('font-size','11px').style('font-family','Inter')
+   .style('fill','var(--grey-lt)').style('font-size','11px').style('font-family','Inter')
    .text('Goals Against Per Game  \u2192  (lower = better defence)');
 
   // Connector lines between seasons
@@ -534,7 +534,7 @@ function drawV3(SPECIAL, seasons) {
 
   // Y axis label
   g.append('text').attr('transform','rotate(-90)').attr('x',-ih/2).attr('y',-50)
-   .style('text-anchor','middle').style('fill','rgba(122,143,173,0.7)')
+   .style('text-anchor','middle').style('fill','var(--grey-lt)')
    .style('font-size','10px').style('font-family','Inter').text('Percentage (%)');
 
   // PP% line
@@ -638,7 +638,7 @@ function drawV4(EP, seasons) {
 
   // Single left Y axis label
   g.append('text').attr('transform','rotate(-90)').attr('x',-ih/2).attr('y',-46)
-   .style('text-anchor','middle').style('fill','rgba(122,143,173,0.7)')
+   .style('text-anchor','middle').style('fill','var(--grey-lt)')
    .style('font-size','10px').style('font-family','Inter').text('Points');
 
   const lEP = d3.line().x(d => xS(d.s)).y(d => y(d.ep)).curve(d3.curveCatmullRom);
