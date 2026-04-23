@@ -488,7 +488,7 @@ function drawV2(TEAM) {
   };
 }
 
-// VIZ 3 (Visualisation 03) - POWER PLAY & PENALTY KILL
+// VIZ 3: POWER PLAY & PENALTY KILL
 function drawV3(SPECIAL, seasons) {
   const box = document.querySelector('#viz3 .chart-box');
   const W = box.clientWidth - 88, H = 380;
