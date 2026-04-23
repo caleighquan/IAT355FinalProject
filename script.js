@@ -1,4 +1,4 @@
-// cursor
+// CURSOR FOLLOWS MOUSE
 const cursor = document.querySelector(".fake-cursor");
 
 document.addEventListener("mousemove", (e) => {
@@ -6,9 +6,7 @@ document.addEventListener("mousemove", (e) => {
   cursor.style.top = e.clientY + "px";
 });
 
-/* ─────────────────────────────────────────────
-   NAV DOTS
-───────────────────────────────────────────── */
+// NAV DOTS
 const SEC = ['hero','overview','approach','viz1','tx1','viz2','tx2','viz3','tx3','ep-profile','viz4','conclusion'];
 const dots = document.querySelectorAll('.ndot');
 dots.forEach((d, i) => d.addEventListener('click', () =>
@@ -25,30 +23,25 @@ const secObs = new IntersectionObserver(entries => {
 }, { threshold: 0.35 });
 SEC.forEach(id => { const el = document.getElementById(id); if (el) secObs.observe(el); });
 
-/* ─────────────────────────────────────────────
-   SCROLL-REVEAL
-───────────────────────────────────────────── */
+
+// SCROLL-REVEAL
 const rvObs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
 }, { threshold: 0.12 });
 document.querySelectorAll('.rv').forEach(el => rvObs.observe(el));
 
-/* ─────────────────────────────────────────────
-   TOOLTIP
-───────────────────────────────────────────── */
+// TOOLTIP
 const TIP = document.getElementById('tip');
 const showTip = (html, x, y) => { TIP.innerHTML = html; TIP.style.opacity = 1; TIP.style.left = (x + 18) + 'px'; TIP.style.top = (y - 14) + 'px'; };
 const moveTip = (x, y) => { TIP.style.left = (x + 18) + 'px'; TIP.style.top = (y - 14) + 'px'; };
 const hideTip = () => { TIP.style.opacity = 0; };
 
-/* ─────────────────────────────────────────────
-   SEASON LABEL NORMALISER (hyphen -> en-dash)
-───────────────────────────────────────────── */
+
+// SEASON LABEL NORMALISER (hyphen -> en-dash)
 const normSeason = s => s.replace(/-/g, '\u2013').trim();
 
-/* ─────────────────────────────────────────────
-   QUIZ LOGIC
-───────────────────────────────────────────── */
+
+// QUIZ LOGIC
 let selectedIdx = null;
 const CORRECT_IDX = 0; // Elias Pettersson
 
@@ -137,7 +130,7 @@ Promise.all([
     po: d.Playoffs
   })).sort((a, b) => csvSeasons.indexOf(a.s) - csvSeasons.indexOf(b.s));
 
-// VIZ 3 (Visualisation 03): PP% and PK% per season 
+// VIZ 3: PP% and PK% per season 
   const SPECIAL = teams.map(d => ({
     s:  d.Season,
     pp: d.PPpct,
@@ -206,7 +199,7 @@ function buildOverviewBars(TEAM) {
   container.innerHTML = html;
 }
 
-// VIZ 1 - TOP 15 PLAYERS BAR CHART
+// VIZ 1: TOP 15 PLAYERS BAR CHART
 function drawV1(TOP15) {
   const box = document.querySelector('#viz1 .chart-box');
   if (!box) return;
@@ -277,7 +270,7 @@ function drawV1(TOP15) {
     .text(d => d.goals);
 }
 
-// VIZ 2 - SCATTERPLOT
+// VIZ 2: SCATTERPLOT
 function drawV2(TEAM) {
   const box = document.querySelector('#viz2 .chart-box');
   const W = box.clientWidth - 88, H = 460;
@@ -399,7 +392,7 @@ function drawV2(TEAM) {
     const rw = Math.abs(ex - dragStart[0]);
     const rh = Math.abs(ey - dragStart[1]);
 
-// Finalise the preview rect - pending confirmation
+// Finalise the preview rect: pending confirmation
     previewRect
       .attr('x', rx).attr('y', ry).attr('width', rw).attr('height', rh)
       .attr('fill', 'rgba(255,200,0,0.12)')
@@ -602,7 +595,7 @@ function drawV3(SPECIAL, seasons) {
     '<div class="cli"><div class="clc" style="background:rgba(255,180,0,0.75)"></div><span class="cll">Penalty Kill %</span></div>';
 }
 
-  //  VIZ 4 (Visualisation 04) - DUAL LINE (EP vs TEAM)
+  //  VIZ 4:(EP vs TEAM)
 function drawV4(EP, seasons) {
   const box = document.querySelector('#viz4 .chart-box');
   const W = box.clientWidth - 88, H = 380;
@@ -614,7 +607,7 @@ function drawV4(EP, seasons) {
 
   const xS = d3.scalePoint().domain(seasons).range([0, iw]).padding(0.28);
 
-  // Single shared Y scale covering both EP points (max ~102) and team pts (max ~109)
+  // y-axis scale based on max of EP and Team points, rounded up to nearest 10 + 10 buffer
   const allVals = EP.flatMap(d => [d.ep, d.tp]);
   const yMax = Math.ceil(d3.max(allVals) / 10) * 10 + 10;
   const y = d3.scaleLinear().domain([0, yMax]).range([ih, 0]);
