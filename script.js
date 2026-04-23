@@ -31,18 +31,18 @@ const rvObs = new IntersectionObserver(entries => {
 }, { threshold: 0.12 });
 document.querySelectorAll('.rv').forEach(el => rvObs.observe(el));
 
-// TOOLTIP
+// TOOLTIP FUNCTIONS: Controls showing, moving, and hiding tooltip near cursor
 const TIP = document.getElementById('tip');
 const showTip = (html, x, y) => { TIP.innerHTML = html; TIP.style.opacity = 1; TIP.style.left = (x + 18) + 'px'; TIP.style.top = (y - 14) + 'px'; };
 const moveTip = (x, y) => { TIP.style.left = (x + 18) + 'px'; TIP.style.top = (y - 14) + 'px'; };
 const hideTip = () => { TIP.style.opacity = 0; };
 
 
-// SEASON LABEL NORMALISER (hyphen -> en-dash)
+// Converts season format from "2023-2024" → "2023–2024" (cleaner display)
 const normSeason = s => s.replace(/-/g, '\u2013').trim();
 
 
-// QUIZ LOGIC
+// Handles selecting the quiz options (highlight + enable submit)
 let selectedIdx = null;
 const CORRECT_IDX = 0; // Elias Pettersson
 
@@ -54,6 +54,7 @@ function selectCard(idx) {
   document.getElementById('submitBtn').disabled = false;
 }
 
+// Checks answer and displays correct/incorrect feedback
 function submitQuiz() {
   const correctFb = document.getElementById('correctFb');
   const wrongFb = document.getElementById('wrongFb');
@@ -74,6 +75,7 @@ function submitQuiz() {
   }
 }
 
+// Reveals visualization after quiz is completed
 function revealChart() {
   document.getElementById('quizBlock').style.display = 'none';
   const chartArea = document.getElementById('chartArea1');
@@ -84,7 +86,7 @@ function revealChart() {
   if (window._TOP15) drawV1(window._TOP15);
 }
 
-//  LOAD BOTH FULL DATASETS, DERIVE AND DRAW
+// Loads player + team CSV data, cleans it, and prepares datasets for all visualizations
 Promise.all([
   d3.csv("canucks_player_stats_2021_2026_combined.csv"),
   d3.csv("canucks_team_stats_2021_2026.csv")
@@ -139,7 +141,7 @@ Promise.all([
     po: d.Playoffs
   })).sort((a, b) => csvSeasons.indexOf(a.s) - csvSeasons.indexOf(b.s));
 
-// VIZ 4 (Visualisation 04): EP points vs team standings points 
+// VIZ 4: EP points vs team standings points 
   const epRows = players.filter(d => d.Player && d.Player.includes('Pettersson'));
   const epBySeason = d3.rollup(epRows, v => d3.sum(v, d => d.Points), d => d.Season);
   const EP = csvSeasons.map(s => {
@@ -147,10 +149,11 @@ Promise.all([
     return { s, ep: epBySeason.get(s) || 0, tp: teamRow ? teamRow.Points : 0 };
   });
 
-// Season overview bars 
+// Builds the season overview bar chart (team standings points per season)
   buildOverviewBars(TEAM);
 
-// Wire up intersection-triggered chart draws
+// Triggers each visualization only when it scrolls into view
+// Prevents charts from rendering too early and improves performance
   const drawn = {};
   const cObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
@@ -174,10 +177,10 @@ Promise.all([
 });
 
   //  SEASON OVERVIEW BAR CHART
-function buildOverviewBars(TEAM) {
-  const maxPts = 130; // scale denominator
-  const container = document.getElementById('sbars');
-  if (!container) return;
+  function buildOverviewBars(TEAM) {
+    const maxPts = 130; // scale denominator
+    const container = document.getElementById('sbars');
+    if (!container) return;
 
   // Sort chronologically
   const sorted = [...TEAM].sort((a, b) => a.s.localeCompare(b.s));
@@ -201,6 +204,7 @@ function buildOverviewBars(TEAM) {
 }
 
 // VIZ 1: TOP 15 PLAYERS BAR CHART
+// Draws bar chart of top 15 Canucks players by total goals over 5 seasons
 function drawV1(TOP15) {
   const box = document.querySelector('#viz1 .chart-box');
   if (!box) return;
@@ -272,6 +276,8 @@ function drawV1(TOP15) {
 }
 
 // VIZ 2: SCATTERPLOT
+// Draws scatterplot of offence vs defence (Goals For vs Goals Against per game)
+// Includes interactive "guess the ideal zone" drag feature
 function drawV2(TEAM) {
   const box = document.querySelector('#viz2 .chart-box');
   const W = box.clientWidth - 88, H = 460;
@@ -336,12 +342,12 @@ function drawV2(TEAM) {
    .style('font-size','10px').style('font-family','Inter').style('font-weight','500')
    .text(d => d.s);
 
-// Ideal zone: HIGH goals for (right) + LOW goals against (bottom = better defence)
+// Ideal zone: high goals for (right) + low goals against (bottom = better defence)
   const IZ = { gfMin: 3.2, gfMax: 3.6, gaMin: 2.55, gaMax: 2.95 };
   const izX = x(IZ.gfMin);
   const izX2 = x(IZ.gfMax);
-  const izY = y(IZ.gaMax); // top edge of rect (ga=2.95 on chart)
-  const izY2 = y(IZ.gaMin); // bottom edge of rect (ga=2.55, bottom of chart)
+  const izY = y(IZ.gaMax); 
+  const izY2 = y(IZ.gaMin); 
   const izW = izX2 - izX;
   const izH = izY2 - izY;
 
@@ -353,7 +359,7 @@ function drawV2(TEAM) {
    .style('fill','rgba(0,168,77)').style('font-size','9px').style('font-family','Inter').style('letter-spacing','0.13em')
    .text('IDEAL ZONE');
 
-// GUESS DRAG HANDLER 
+// GUESS DRAG HANDLER: Handles user drag interaction for guessing the "ideal performance zone"
   let guessed = false;
   let dragStart = null;
   const chartBox = document.getElementById('chartBox2');
@@ -596,7 +602,7 @@ function drawV3(SPECIAL, seasons) {
     '<div class="cli"><div class="clc" style="background:rgba(255,180,0,0.75)"></div><span class="cll">Penalty Kill %</span></div>';
 }
 
-  //  VIZ 4:(EP vs TEAM)
+  //  VIZ 4:(EP vs TEAM) draws line chart comparing Elias Pettersson's points vs team standings points
 function drawV4(EP, seasons) {
   const box = document.querySelector('#viz4 .chart-box');
   const W = box.clientWidth - 88, H = 380;
