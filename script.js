@@ -607,7 +607,7 @@ function drawV3(SPECIAL, seasons) {
 function drawV4(EP, seasons) {
   const box = document.querySelector('#viz4 .chart-box');
   const W = box.clientWidth - 88, H = 380;
-  const m = { top:30, right:40, bottom:54, left:58 }; // reduced right margin (no right axis)
+  const m = { top:30, right:40, bottom:54, left:58 }; 
   const iw = W - m.left - m.right, ih = H - m.top - m.bottom;
 
   const svg = d3.select('#ch4').attr('width', W).attr('height', H);
@@ -636,7 +636,7 @@ function drawV4(EP, seasons) {
   g.append('g').attr('class','axis')
    .call(d3.axisLeft(y).ticks(6).tickSize(0).tickPadding(8));
 
-  // Single left Y axis label
+  // Y axis label
   g.append('text').attr('transform','rotate(-90)').attr('x',-ih/2).attr('y',-46)
    .style('text-anchor','middle').style('fill','rgba(122,143,173,0.7)')
    .style('font-size','10px').style('font-family','Inter').text('Points');

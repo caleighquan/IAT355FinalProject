@@ -100,7 +100,7 @@ body {
 #tip .tr { display: flex; justify-content: space-between; gap: 20px; font-size: 0.78rem; color: var(--grey-lt); margin-bottom: 3px; }
 #tip .tv { color: #fff; font-weight: 500; }
 
-/* SCROLL-REVEAL */
+/* SCROLL REVEAL animation*/
 .rv {
   opacity: 0;
   transform: translateY(36px);
@@ -390,7 +390,6 @@ h2.st em { color: var(--green); font-style: normal; }
 
 /* ─── TRANSITION 2 ─── */
     #tx2 { background:var(--navy-dk); padding:130px 0; }
-    #tx2 .tx2-body { margin-top: 36px; }
 
     /* ─── TRANSITION 3 ─── */
     #tx3 { background:var(--navy-dk); padding:130px 0; }
