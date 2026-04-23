@@ -9,7 +9,7 @@
 // * https://moneypuck.com/data.htm
 // 
 
-
+// Custom Cursor: https://sweezy-cursors.com/cursor/vancouver-canucks-stick-animated/ 
 
 
 /* ------------------------------------------------------------------------------------------------------------------------------ */
@@ -31,3 +31,4 @@
 // how close you were, or "Redo" to try again.
 
 // Tooltips: Hovering over any data point across all four charts reveals a tooltip with the exact values for that point.
+
