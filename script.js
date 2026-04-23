@@ -398,7 +398,7 @@ function drawV2(TEAM) {
     const rw = Math.abs(ex - dragStart[0]);
     const rh = Math.abs(ey - dragStart[1]);
 
-// Finalise the preview rect — pending confirmation
+// Finalise the preview rect - pending confirmation
     previewRect
       .attr('x', rx).attr('y', ry).attr('width', rw).attr('height', rh)
       .attr('fill', 'rgba(255,200,0,0.12)')
@@ -454,17 +454,17 @@ function drawV2(TEAM) {
         resultEl.classList.add('close');
         iconEl.textContent = '✓';
         titleEl.textContent = 'Spot on!';
-        bodyEl.innerHTML = 'You placed your guess inside the ideal zone — <strong>high scoring, low goals against</strong>. That\'s exactly where the 2023–24 Canucks landed, and why it was their only playoff season.';
+        bodyEl.innerHTML = 'You placed your guess inside the ideal zone - <strong>high scoring, low goals against</strong>. That\'s exactly where the 2023–24 Canucks landed, and why it was their only playoff season.';
       } else if (isClose) {
         resultEl.classList.add('close');
         iconEl.textContent = '◎';
         titleEl.textContent = 'Close!';
-        bodyEl.innerHTML = 'You were close. The ideal zone sits in the <strong>bottom-right corner</strong> — high goals for, low goals against. Only 2023–24 reached it across five seasons.';
+        bodyEl.innerHTML = 'You were close. The ideal zone sits in the <strong>bottom-right corner</strong> - high goals for, low goals against. Only 2023–24 reached it across five seasons.';
       } else {
         resultEl.classList.add('far');
         iconEl.textContent = '✗';
-        titleEl.textContent = 'Not quite —';
-        bodyEl.innerHTML = 'The ideal zone is the <strong>bottom-right corner</strong>: scoring lots while conceding little. It\'s rare — the Canucks only managed it once in five seasons, in 2023–24.';
+        titleEl.textContent = 'Not quite -';
+        bodyEl.innerHTML = 'The ideal zone is the <strong>bottom-right corner</strong>: scoring lots while conceding little. It\'s rare - the Canucks only managed it once in five seasons, in 2023–24.';
       }
 
       resultEl.style.display = 'block';
