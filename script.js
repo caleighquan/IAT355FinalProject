@@ -607,17 +607,20 @@ function drawV3(SPECIAL, seasons) {
 function drawV4(EP, seasons) {
   const box = document.querySelector('#viz4 .chart-box');
   const W = box.clientWidth - 88, H = 380;
-  const m = { top:30, right:82, bottom:54, left:58 };
+  const m = { top:30, right:40, bottom:54, left:58 }; // reduced right margin (no right axis)
   const iw = W - m.left - m.right, ih = H - m.top - m.bottom;
 
   const svg = d3.select('#ch4').attr('width', W).attr('height', H);
   const g = svg.append('g').attr('transform', 'translate(' + m.left + ',' + m.top + ')');
 
-  const xS  = d3.scalePoint().domain(seasons).range([0, iw]).padding(0.28);
-  const yEP = d3.scaleLinear().domain([0, 120]).range([ih, 0]);
-  const yTP = d3.scaleLinear().domain([0, 130]).range([ih, 0]);
+  const xS = d3.scalePoint().domain(seasons).range([0, iw]).padding(0.28);
 
-  g.append('g').attr('class','grid').call(d3.axisLeft(yEP).tickSize(-iw).tickFormat('').ticks(6));
+  // Single shared Y scale covering both EP points (max ~102) and team pts (max ~109)
+  const allVals = EP.flatMap(d => [d.ep, d.tp]);
+  const yMax = Math.ceil(d3.max(allVals) / 10) * 10 + 10;
+  const y = d3.scaleLinear().domain([0, yMax]).range([ih, 0]);
+
+  g.append('g').attr('class','grid').call(d3.axisLeft(y).tickSize(-iw).tickFormat('').ticks(6));
 
   const px1 = xS(seasons[1]), px2 = xS(seasons[2]), bw = xS.step();
   g.append('rect').attr('x', px1 - bw*0.17).attr('y', 0)
@@ -628,23 +631,25 @@ function drawV4(EP, seasons) {
    .style('font-size','9px').style('font-family','Inter').style('letter-spacing','0.13em')
    .text('PEAK YEARS');
 
-  g.append('g').attr('class','axis').attr('transform','translate(0,' + ih + ')').call(d3.axisBottom(xS).tickSize(0).tickPadding(12));
-  g.append('g').attr('class','axis').call(d3.axisLeft(yEP).ticks(6).tickSize(0).tickPadding(8));
-  g.append('g').attr('class','axis').attr('transform','translate(' + iw + ',0)').call(d3.axisRight(yTP).ticks(6).tickSize(0).tickPadding(8));
+  g.append('g').attr('class','axis').attr('transform','translate(0,' + ih + ')')
+   .call(d3.axisBottom(xS).tickSize(0).tickPadding(12));
+  g.append('g').attr('class','axis')
+   .call(d3.axisLeft(y).ticks(6).tickSize(0).tickPadding(8));
 
+  // Single left Y axis label
   g.append('text').attr('transform','rotate(-90)').attr('x',-ih/2).attr('y',-46)
-   .style('text-anchor','middle').style('fill','rgba(0,168,77,0.55)').style('font-size','10px').style('font-family','Inter').text('EP Points');
-  g.append('text').attr('transform','rotate(90)').attr('x',ih/2).attr('y',-(iw+68))
-   .style('text-anchor','middle').style('fill','rgba(180,190,210,0.45)').style('font-size','10px').style('font-family','Inter').text('Team Pts');
+   .style('text-anchor','middle').style('fill','rgba(122,143,173,0.7)')
+   .style('font-size','10px').style('font-family','Inter').text('Points');
 
-  const lEP = d3.line().x(d => xS(d.s)).y(d => yEP(d.ep)).curve(d3.curveCatmullRom);
-  const lTP = d3.line().x(d => xS(d.s)).y(d => yTP(d.tp)).curve(d3.curveCatmullRom);
+  const lEP = d3.line().x(d => xS(d.s)).y(d => y(d.ep)).curve(d3.curveCatmullRom);
+  const lTP = d3.line().x(d => xS(d.s)).y(d => y(d.tp)).curve(d3.curveCatmullRom);
 
   g.append('path').datum(EP).attr('fill','none').attr('stroke','var(--green)').attr('stroke-width',2.5).attr('d',lEP);
   g.append('path').datum(EP).attr('fill','none').attr('stroke','rgba(176,189,212,0.42)').attr('stroke-width',2).attr('d',lTP);
 
+  // EP dots
   g.selectAll('.epd').data(EP).enter().append('circle').attr('class','epd')
-   .attr('cx', d => xS(d.s)).attr('cy', d => yEP(d.ep)).attr('r', 6)
+   .attr('cx', d => xS(d.s)).attr('cy', d => y(d.ep)).attr('r', 6)
    .attr('fill','var(--green)').attr('stroke','var(--navy-dk)').attr('stroke-width',2.5)
    .style('cursor','pointer')
    .on('mouseover', function(ev, d) {
@@ -659,14 +664,16 @@ function drawV4(EP, seasons) {
    .on('mousemove', ev => moveTip(ev.clientX, ev.clientY))
    .on('mouseout', function() { d3.select(this).attr('r', 6); hideTip(); });
 
+  // EP value labels
   g.selectAll('.epl').data(EP).enter().append('text').attr('class','epl')
-   .attr('x', d => xS(d.s)).attr('y', d => yEP(d.ep) - 15)
+   .attr('x', d => xS(d.s)).attr('y', d => y(d.ep) - 15)
    .style('text-anchor','middle').style('fill','#00D45A')
    .style('font-size','10px').style('font-family','Inter').style('font-weight','600')
    .text(d => d.ep);
 
+  // Team dots
   g.selectAll('.tpd').data(EP).enter().append('circle').attr('class','tpd')
-   .attr('cx', d => xS(d.s)).attr('cy', d => yTP(d.tp)).attr('r', 5)
+   .attr('cx', d => xS(d.s)).attr('cy', d => y(d.tp)).attr('r', 5)
    .attr('fill','rgba(176,189,212,0.55)').attr('stroke','var(--navy-md)').attr('stroke-width',2)
    .style('cursor','pointer')
    .on('mouseover', function(ev, d) {
@@ -680,6 +687,13 @@ function drawV4(EP, seasons) {
    })
    .on('mousemove', ev => moveTip(ev.clientX, ev.clientY))
    .on('mouseout', function() { d3.select(this).attr('r', 5); hideTip(); });
+
+  // Team value labels (below the dot to avoid clash with EP labels above)
+  g.selectAll('.tpl').data(EP).enter().append('text').attr('class','tpl')
+   .attr('x', d => xS(d.s)).attr('y', d => y(d.tp) + 20)
+   .style('text-anchor','middle').style('fill','rgba(176,189,212,0.7)')
+   .style('font-size','10px').style('font-family','Inter').style('font-weight','600')
+   .text(d => d.tp);
 
   document.getElementById('leg4').innerHTML =
     '<div class="cli"><div class="clc" style="background:var(--green)"></div><span class="cll">Pettersson Points</span></div>' +
