@@ -15,6 +15,8 @@ Basic JS quiz structure: https://dev.to/linusmwiti21/level-up-your-skills-build-
 
 Scrolling/reveal animation: https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API 
 
+Dragging logic: https://d3js.org/d3-drag 
+
 ------------------------------------------------------------------------------------------------------------------------------
 
 HOW TO USE THE WEBSITE:
