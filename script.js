@@ -62,9 +62,8 @@ function selectCard(idx) {
 
 function submitQuiz() {
   const correctFb = document.getElementById('correctFb');
-  const wrongFb   = document.getElementById('wrongFb');
-  const options   = document.getElementById('quizOptions');
-
+  const wrongFb = document.getElementById('wrongFb');
+  
   // Mark correct / wrong on cards
   document.querySelectorAll('.quiz-card').forEach((c, i) => {
     if (i === CORRECT_IDX) c.classList.add('correct');
@@ -84,9 +83,9 @@ function submitQuiz() {
 function revealChart() {
   document.getElementById('quizBlock').style.display = 'none';
   const chartArea = document.getElementById('chartArea1');
-  const insGrid   = document.getElementById('insGrid1');
+  const insGrid = document.getElementById('insGrid1');
   chartArea.style.display = 'block';
-  insGrid.style.display   = 'grid';
+  insGrid.style.display = 'grid';
   // Trigger the chart draw immediately since section is already visible
   if (window._TOP15) drawV1(window._TOP15);
 }
@@ -99,24 +98,24 @@ Promise.all([
 
 // Coerce player types
   players.forEach(d => {
-    d.Goals   = +d.goals;
+    d.Goals = +d.goals;
     d.Assists = +d.assists;
-    d.Points  = +d.points;
-    d.GP      = +d.gp;
-    d.Player  = d.player;
-    d.Season  = normSeason(d.season);
+    d.Points = +d.points;
+    d.GP = +d.gp;
+    d.Player = d.player;
+    d.Season = normSeason(d.season);
   });
 
 // Coerce team types
   teams.forEach(d => {
-    d.Points       = +d.PTS;
-    d.GoalsFor     = +d.GF;
+    d.Points = +d.PTS;
+    d.GoalsFor = +d.GF;
     d.GoalsAgainst = +d.GA;
-    d.GamesPlayed  = +d.GP;
-    d.PPpct        = +d['PP%'];
-    d.PKpct        = +d['PK%'];
-    d.Season       = normSeason(d.Season);
-    d.Playoffs     = d.Season === '2023\u201324';
+    d.GamesPlayed = +d.GP;
+    d.PPpct = +d['PP%'];
+    d.PKpct = +d['PK%'];
+    d.Season = normSeason(d.Season);
+    d.Playoffs = d.Season === '2023\u201324';
   });
 
   const csvSeasons = [...new Set(teams.map(d => d.Season))].sort();
@@ -131,11 +130,11 @@ Promise.all([
 
 // VIZ 2: GF/GA per game per season
   const TEAM = teams.map(d => ({
-    s:   d.Season,
+    s: d.Season,
     pts: d.Points,
-    gf:  +(d.GoalsFor  / d.GamesPlayed).toFixed(2),
-    ga:  +(d.GoalsAgainst / d.GamesPlayed).toFixed(2),
-    po:  d.Playoffs
+    gf: +(d.GoalsFor  / d.GamesPlayed).toFixed(2),
+    ga: +(d.GoalsAgainst / d.GamesPlayed).toFixed(2),
+    po: d.Playoffs
   })).sort((a, b) => csvSeasons.indexOf(a.s) - csvSeasons.indexOf(b.s));
 
 // VIZ 3 (Visualisation 03): PP% and PK% per season 
@@ -345,12 +344,12 @@ function drawV2(TEAM) {
 
 // Ideal zone: HIGH goals for (right) + LOW goals against (bottom = better defence)
   const IZ = { gfMin: 3.2, gfMax: 3.6, gaMin: 2.55, gaMax: 2.95 };
-  const izX  = x(IZ.gfMin);
+  const izX = x(IZ.gfMin);
   const izX2 = x(IZ.gfMax);
-  const izY  = y(IZ.gaMax);   // top edge of rect (ga=2.95 on chart)
-  const izY2 = y(IZ.gaMin);   // bottom edge of rect (ga=2.55, bottom of chart)
-  const izW  = izX2 - izX;
-  const izH  = izY2 - izY;
+  const izY = y(IZ.gaMax); // top edge of rect (ga=2.95 on chart)
+  const izY2 = y(IZ.gaMin); // bottom edge of rect (ga=2.55, bottom of chart)
+  const izW = izX2 - izX;
+  const izH = izY2 - izY;
 
   const idealZone = g.append('g').attr('class','ideal-zone-g').style('opacity', 0);
   idealZone.append('rect')
@@ -435,10 +434,10 @@ function drawV2(TEAM) {
 
     const { rx, ry, rw, rh } = window._pendingGuess;
 
-    const overlapX    = Math.max(0, Math.min(rx + rw, izX + izW) - Math.max(rx, izX));
-    const overlapY    = Math.max(0, Math.min(ry + rh, izY + izH) - Math.max(ry, izY));
+    const overlapX = Math.max(0, Math.min(rx + rw, izX + izW) - Math.max(rx, izX));
+    const overlapY = Math.max(0, Math.min(ry + rh, izY + izH) - Math.max(ry, izY));
     const overlapArea = overlapX * overlapY;
-    const drawnArea   = rw * rh;
+    const drawnArea = rw * rh;
     const overlapFrac = drawnArea > 0 ? overlapArea / Math.min(izW * izH, drawnArea) : 0;
 
     const inIdeal = overlapFrac > 0.4;
@@ -448,9 +447,9 @@ function drawV2(TEAM) {
       idealZone.transition().duration(700).style('opacity', 1);
 
       const resultEl = document.getElementById('guessResult');
-      const iconEl   = document.getElementById('guessIcon');
-      const titleEl  = document.getElementById('guessTitle');
-      const bodyEl   = document.getElementById('guessBody');
+      const iconEl = document.getElementById('guessIcon');
+      const titleEl = document.getElementById('guessTitle');
+      const bodyEl = document.getElementById('guessBody');
 
       if (inIdeal) {
         resultEl.classList.add('close');
@@ -505,7 +504,7 @@ function drawV3(SPECIAL, seasons) {
   const yMax = Math.ceil(d3.max(allVals) + 2);
 
   const xS = d3.scalePoint().domain(seasons).range([0, iw]).padding(0.28);
-  const y  = d3.scaleLinear().domain([yMin, yMax]).range([ih, 0]);
+  const y = d3.scaleLinear().domain([yMin, yMax]).range([ih, 0]);
 
   // Grid lines
   g.append('g').attr('class','grid').call(d3.axisLeft(y).tickSize(-iw).tickFormat('').ticks(6));
