@@ -60,7 +60,7 @@ body {
   padding: 3px 8px; border-radius: 3px;
 }
 .ndot:hover::after { opacity: 1; }
-.ndot:hover { background: rgba(255,255,255,0.5); transform: scale(1.25); cursor: none;}
+.ndot:hover { background: rgba(255,255,255,0.5); transform: scale(1.25); cursor: pointer;}
 .ndot.on {
   background: var(--green); border-color: var(--green);
   transform: scale(1.55);
