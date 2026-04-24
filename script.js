@@ -39,7 +39,7 @@ const moveTip = (x, y) => { TIP.style.left = (x + 18) + 'px'; TIP.style.top = (y
 const hideTip = () => { TIP.style.opacity = 0; };
 
 
-// Converts season format from "2023-2024" "2023–2024" (cleaner display)
+// Converts season format from "2023-2024" "2023–2024" 
 const normSeason = s => s.replace(/-/g, '\u2013').trim();
 
 
