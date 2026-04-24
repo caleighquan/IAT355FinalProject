@@ -280,7 +280,7 @@ function drawV1(TOP15) {
 
 // VIZ 2: SCATTERPLOT
 // Draws scatterplot of offence vs defence (Goals For vs Goals Against per game)
-// Includes interactive "guess the ideal zone" drag feature
+// Interactive "guess the ideal zone" drag feature
 function drawV2(TEAM) {
   const box = document.querySelector('#viz2 .chart-box');
   const W = box.clientWidth - 88, H = 460;
