@@ -606,7 +606,7 @@ function drawV3(SPECIAL, seasons) {
     '<div class="cli"><div class="clc" style="background:rgba(255,180,0,0.75)"></div><span class="cll">Penalty Kill %</span></div>';
 }
 
-  //  VIZ 4:(EP vs TEAM) draws line chart comparing Elias Pettersson's points vs team standings points
+  // VIZ 4:(EP vs TEAM) draws line chart comparing Elias Pettersson's points vs team standings points
 function drawV4(EP, seasons) {
   const box = document.querySelector('#viz4 .chart-box');
   const W = box.clientWidth - 88, H = 380;
