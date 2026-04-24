@@ -17,6 +17,8 @@ Scrolling/reveal animation: https://developer.mozilla.org/en-US/docs/Web/API/Int
 
 Dragging logic: https://d3js.org/d3-drag 
 
+Elias Pettersson Research: https://www.eliteprospects.com/player/266336/elias-pettersson#career-highlights 
+
 ------------------------------------------------------------------------------------------------------------------------------
 
 HOW TO USE THE WEBSITE:
